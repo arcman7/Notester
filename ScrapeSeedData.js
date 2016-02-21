@@ -40,5 +40,3 @@ function scrapeTree(options,$){
 
   recurseTree(current);
 }//end scrapeTree
-
-      //beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))}//required for rails ajax requests

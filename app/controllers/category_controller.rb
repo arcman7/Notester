@@ -1,8 +1,13 @@
 class CategoryController < ApplicationController
+  require 'json'
   skip_before_action :verify_authenticity_token
 
   def index
-
+    @flare                 = Category.find_by(name: "flare")
+    @programming_languages = Category.find_by(name: "Programming Languages")
+    flare_tree = @flare.get_tree_sub_cats
+    programming_languages_tree = @programming_languages.get_tree_sub_cats
+    render json: {flareTreeArray: flare_tree.to_json, programmingLanguagesTreeArray: programming_languages_tree.to_json }
   end
 
   def create

@@ -58,8 +58,11 @@ class Category < ActiveRecord::Base
     end
   end
   def get_tree_sub_cats
-    @@results = []
+    @@results = [ ]
     recurse_cats(self)
-    @@results.map {|cat| { name: cat.name, cat: cat.id, parent: cat.parent_category.id } }
+    p @@results
+    @@results.map {|cat| { name: cat.name, category_id: cat.id, parent_id: cat.parent_category.id } }
+    @@results.unshift({ name: self.name, category_id: self.id, parent_id: nil })
+    @@results
   end
 end #Category.first.get_tree_sub_cats
