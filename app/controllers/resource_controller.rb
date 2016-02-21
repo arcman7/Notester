@@ -5,7 +5,7 @@ class ResourceController < ApplicationController
 
   def create
     @new_resource = Resource.new(params.require(:resource).permit(:title, :description, :file)
-    if(params[:user])
+    if params[:user]
       @user = User.find(params[:user])
     end
     begin
