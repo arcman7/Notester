@@ -13,7 +13,7 @@ class CategoryController < ApplicationController
   def create
     @new_category = Category.new(params.require(:category).permit(:name))
     @parent_category = false
-    if(params[:parent_id])
+    if params[:parent_id]
       @parent_category = Category.find(params[:parent_id])
     end
 
