@@ -1,6 +1,9 @@
 require "faker"
 
-arcman77 = User.create(username:"arcman77", email: "andrewryancarpenter77@gmail.com")
+
+arcman77     = User.create(username:"arcman77", email: "andrewryancarpenter77@gmail.com")
+creatorkarma = User.create(username:"creatorkarma", email: "jms@creatorkarma.com");
+vrturo       = User.create(username: "vrturo", email: "vrturo@gmail.com");
 
 codeLang = Category.create(name: "Programming Languages")
 assembler = Category.create(name: "Assembler")
