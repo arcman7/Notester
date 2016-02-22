@@ -9,7 +9,6 @@ class CategoryController < ApplicationController
     programming_languages_tree = @programming_languages.get_tree_sub_cats
     # render json: {flareTreeArray: flare_tree.to_json, programmingLanguagesTreeArray: programming_languages_tree.to_json }
     render json: {flareTree: flare_tree.to_json, programmingLanguagesTree: programming_languages_tree.to_json }
-
   end
 
   def create
@@ -39,4 +38,11 @@ class CategoryController < ApplicationController
       render json: {error: "resource not found"}
     end
   end #show
+
+  def update
+    if Category.exists? params[:id]
+      @category = Category.find(params[:id])
+      @
+    end
+  end
 end
