@@ -48,15 +48,17 @@
   .ghostCircle, .activeDrag .ghostCircle{
        display: none;
   }
-
+  #tree-container{
+    border: 1px solid black;
+  }
 </style>
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script >
 
 
-var margin = {top: 50, right: 50, bottom: 20, left: 120},
-    width = 1000 - margin.right - margin.left,
+var margin = {top: 10, right: 10, bottom: 10, left: 10},
+    width = 500 - margin.right - margin.left,
     height = 1000 - margin.top - margin.bottom;
 
 var i = 0,
@@ -72,6 +74,7 @@ var diagonal = d3.svg.diagonal()
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom)
+    .attr("style", "outline: thin solid green;")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -104,7 +107,7 @@ function update(source) {
       links = tree.links(nodes);
 
   // Normalize for fixed-depth.
-  nodes.forEach(function(d) { d.y = d.depth * 180; });
+  nodes.forEach(function(d) { d.y = d.depth * 100; });
 
   // Update the nodes…
   var node = svg.selectAll("g.node")
@@ -187,6 +190,7 @@ function update(source) {
 
 // Toggle children on click.
 function click(d) {
+  console.log(d);
   if (d.children) {
     d._children = d.children;
     d.children = null;
