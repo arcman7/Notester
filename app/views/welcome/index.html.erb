@@ -75,7 +75,7 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.json("http://localhost:3000/category", function(error, trees) {
+d3.json("http://notester.herokuapp.com/category", function(error, trees) {
   if (error) throw error;
   root = JSON.parse(trees.flareTree);
   // root = JSON.parse(trees.programmingLanguagesTree);
