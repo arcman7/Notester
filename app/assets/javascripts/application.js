@@ -15,4 +15,5 @@
 //= require turbolinks
 //= require underscore
 //= require bootstrap_folder
+//= require generatetree
 //= require_tree .
