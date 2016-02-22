@@ -1,71 +1,76 @@
 <!DOCTYPE html>
-<section id="content">
-    <section class="hbox stretch">
-        <!-- .aside -->
+<section class="vbox">
+  <section id="content">
+      <section class="hbox stretch">
         <aside class="aside-xxl b-l b-r" id="note-list">
-          <section class="vbox flex">
-            <header class="header clearfix">
-              <span class="pull-right m-t"><button class="btn btn-dark btn-sm btn-icon" id="new-note" data-toggle="tooltip" data-placement="right" title="New"><i class="fa fa-plus"></i></button></span>
-              <p class="h1">Notester</p>
-              <div class="input-group m-t-sm m-b-sm">
-                <span class="input-group-addon input-sm"><i class="fa fa-search"></i></span>
-                <input type="text" class="form-control input-sm" id="search-note" placeholder="search">
-              </div>
-            </header>
-            <section>
-              <section>
-                <section>
-                  <div class="padder">
-                    <!-- note list -->
-                    <ul id="note-items" class="list-group list-group-sp"></ul>
-                      <!-- templates -->
-                      <script type="text/template" id="item-template">
-                        <div class="view" id="note-< id %>">
-                          <button class="destroy close hover-action">&times;</button>
-                          <div class="note-name">
-                            <strong>
-                            New Note
-                            </strong>
-                          </div>
-                          <div class="note-desc">
-                            NOTE TITLE
-                          </div>
-                          <span class="text-xs text-muted"></span>
-                        </div>
-                      </script>
-                      <!-- / template  -->
-                    <!-- note list -->
-                    <p class="text-center">&nbsp;</p>
-                  </div>
-                </section>
-              </section>
-            </section>
-          </section>
-        </aside>
-        <!-- /.aside -->
-        <aside id="note-detail">
-          <script type="text/template" id="note-template">
-            <section class="vbox">
-              <header class="header bg-light lter bg-gradient b-b">
-                <p> being created by: <strong>USER NAME</strong></p>
-                   <p id="note-date" > </p>
-              </header>
-              <section class="bg-light lter">
-                <section class="hbox stretch">
-                  <aside>
-                    <section class="vbox b-b">
-                      <section class="paper">
-                          <textarea type="text" class="form-control scrollable" placeholder="Type your note here"></textarea>
+
+          </aside>
+          <!-- /.aside -->
+          <!-- .aside -->
+          <aside id="note-detail">
+            <script type="text/template" id="note-template">
+              <section class="vbox">
+                <header class="header bg-light lter bg-gradient b-b">
+                  <p> being created by: <strong>USER NAME</strong></p>
+                     <p id="note-date" > </p>
+                </header>
+                <section class="bg-light lter">
+                  <section class="hbox stretch">
+                    <aside>
+                      <section class="vbox b-b">
+                        <section class="paper">
+                            <textarea type="text" class="form-control scrollable" placeholder="Type your note here"></textarea>
+                        </section>
                       </section>
-                    </section>
-                  </aside>
+                    </aside>
+                  </section>
+                </section>
+              </section>
+            </script>
+          </aside>
+          <aside class="aside-xl b-l b-r" id="note-list">
+            <section class="vbox flex">
+             <header class="header clearfix">
+                <span class="pull-right m-t"><button class="btn btn-dark btn-sm btn-icon" id="new-note" data-toggle="tooltip" data-placement="right" title="New"><i class="fa fa-plus"></i></button></span>
+                <p class="h1">Notester</p>
+                <div class="input-group m-t-sm m-b-sm">
+                  <span class="input-group-addon input-sm"><i class="fa fa-search"></i></span>
+                  <input type="text" class="form-control input-sm" id="search-note" placeholder="search">
+                </div>
+              </header>
+              <section id="treeholder">
+                <section>
+                  <section>
+                    <div class="padder">
+                      <!-- note list -->
+                      <ul id="note-items" class="list-group list-group-sp"></ul>
+                        <!-- templates -->
+                        <script type="text/template" id="item-template">
+                          <div class="view" id="note-< id %>">
+                            <button class="destroy close hover-action">&times;</button>
+                            <div class="note-name">
+                              <strong>
+                              New Note
+                              </strong>
+                            </div>
+                            <div class="note-desc">
+                              NOTE TITLE
+                            </div>
+                            <span class="text-xs text-muted"></span>
+                          </div>
+                        </script>
+                        <!-- / template  -->
+                      <!-- note list -->
+                      <p class="text-center">&nbsp;</p>
+                    </div>
+                  </section>
                 </section>
               </section>
             </section>
-          </script>
-        </aside>
-    </section>
+          </aside>
+          <!-- /.aside -->
+      </section>
   </section>
-  <div id="tree-container"></div>
-<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="http://d3js.org/d3.v3.min.js"></script>
+</section>
+  <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="http://d3js.org/d3.v3.min.js"></script>

@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
-    width = 500 - margin.right - margin.left,
-    height = 1000 - margin.top - margin.bottom;
+    width = 397 - margin.right - margin.left,
+    height = 800 - margin.top - margin.bottom;
 
 var i = 0,
     duration = 750,
@@ -15,7 +15,8 @@ var tree = d3.layout.tree()
 var diagonal = d3.svg.diagonal()
     .projection(function(d) { return [d.y, d.x]; });
 
-var svg = d3.select("body").append("svg")
+
+var svg = d3.select("#note-list").append("svg")
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom)
     .attr("style", "outline: thin solid green;")
