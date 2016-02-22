@@ -49,17 +49,42 @@ class Category < ActiveRecord::Base
   #   end
   #   tag_count
   # end
-  def recurse_cats(parent)
-    return if parent.sub_categories.length == 0
-    p self.name
-    @@results.concat(parent.sub_categories)
-    parent.sub_categories.each do |subcat|
-      recurse_cats(subcat)
+  ######     Pass up array form  ######
+  # def recurse_cats(parent)
+  #   return if parent.sub_categories.length == 0
+  #   p self.name
+  #   @@results.concat(parent.sub_categories)
+  #   parent.sub_categories.each do |subcat|
+  #     recurse_cats(subcat)
+  #   end
+  # end
+  # def get_tree_sub_cats
+  #   @@results = [ ]
+  #   node_array = [{ name: self.name, category_id: self.id, parent_id: nil, parent_name: nil }]
+  #   recurse_cats(self)
+  #   p @@results
+  #   @@results.each {|cat| node_array.push({ name: cat.name, category_id: cat.id, parent_id: cat.parent_category.id, parent_name: cat.parent_category.name }) }
+  #   #@@results
+  #   node_array
+  # end
+  ######     Pass up tree form  ######
+
+    def recurse_cats(parent,current_node)
+      return if parent.sub_categories.length == 0
+      #p self.name
+      current_node["children"] =  []
+      parent.sub_categories.each{|cat| current_node["children"].push({name: cat.name, parent: cat.parent_category.name }) }
+      p current_node
+      parent.sub_categories.each do |subcat|
+        index     = current_node["children"].index{|node| node[:name] == subcat.name}
+        next_node = current_node["children"][index]
+        recurse_cats( subcat, next_node  )
+      end
     end
-  end
-  def get_tree_sub_cats
-    @@results = []
-    recurse_cats(self)
-    @@results.map {|cat| { name: cat.name, cat: cat.id, parent: cat.parent_category.id } }
-  end
-end #Category.first.get_tree_sub_cats
+    def get_tree_sub_cats
+      @@results = { name: self.name, parent: nil }
+      recurse_cats(self,@@results)
+      @@results
+    end
+end
+
