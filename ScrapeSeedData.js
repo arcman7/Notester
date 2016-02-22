@@ -40,3 +40,5 @@ function scrapeTree(options,$){
 
   recurseTree(current);
 }//end scrapeTree
+//                                                                                       you need to add this var
+herokuOptions = {route: "category", domain: "notester.herokuapp.com", protocol: "https:", tree: flare}
