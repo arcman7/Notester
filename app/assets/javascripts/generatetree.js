@@ -16,7 +16,7 @@ var diagonal = d3.svg.diagonal()
     .projection(function(d) { return [d.y, d.x]; });
 
 
-var svg = d3.select("#note-list").append("svg")
+var svg = d3.select("#tree-list").append("svg")
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom)
     .attr("style", "outline: thin solid green;")
