@@ -16,4 +16,5 @@
 //= require underscore
 //= require bootstrap_folder
 //= require generatetree
+//= require underscore
 //= require_tree .
