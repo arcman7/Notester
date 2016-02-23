@@ -32,7 +32,7 @@
         <section class="vbox flex">
          <header class="header clearfix" style="text-align: right">
             <span class="pull-left m-t"><button class="btn btn-dark btn-sm btn-icon" id="new-note" data-toggle="tooltip" data-placement="right" title="New"><i class="fa fa-plus"></i></button></span>
-            <p class="h1">Notester</p>
+            <p id="notester-header" class="h1">Notester</p>
             <div class="input-group m-t-sm m-b-sm">
               <span class="input-group-addon input-sm"><i class="fa fa-search"></i></span>
               <input type="text" class="form-control input-sm" id="search-note" placeholder="search">
@@ -46,7 +46,7 @@
                   <ul id="note-items" class="list-group list-group-sp"></ul>
                     <!-- templates -->
                     <script type="text/template" id="item-template">
-                      <div class="view" id="note-< id %>">
+                      <div class="view">
                         <button class="destroy close hover-action">&times;</button>
                         <div class="note-name">
                           <strong>
