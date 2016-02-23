@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   resources :welcome, only: [:index]
 
   resources :user
-  resources :session, ony: [:new, :create]
+  resources :session, ony: [:new, :create, :destroy]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

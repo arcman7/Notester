@@ -8,11 +8,10 @@ class SessionController < ApplicationController
       set_current_user(@user)
       redirect_to root_path
     else
-      render '/session/new'
+      redirect_to '/session/new'
     end
   end
   def destroy
-    p session
     session.destroy
     redirect_to root_path
   end
