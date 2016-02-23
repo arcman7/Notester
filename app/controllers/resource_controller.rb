@@ -29,5 +29,13 @@ class ResourceController < ApplicationController
      else
         render json: {error: "resource not found"}
      end
-  end
+  end#show
+    def update
+    if Resouce.exists? params[:id]
+      @resource = resource.find(params[:id])
+      @resource.update(params.require(:resource).permit(:description, :title, :parent))
+      render json: {success: "update complete"}
+    end
+    render json: {error: "resource not found"}
+  end#update
 end

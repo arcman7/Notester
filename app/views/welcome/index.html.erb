@@ -1,367 +1,74 @@
-<h1>Welcome#index</h1>
-<p>Find me in app/views/welcome/index.html.erb</p>
 <!DOCTYPE html>
-
-<style type="text/css">
-
-  .node {
-    cursor: pointer;
-  }
-
-  .overlay{
-      background-color:#EEE;
-  }
-
-  .node circle {
-    fill: #fff;
-    stroke: steelblue;
-    stroke-width: 1.5px;
-  }
-
-  .node text {
-    font-size:10px;
-    font-family:sans-serif;
-  }
-
-  .link {
-    fill: none;
-    stroke: #ccc;
-    stroke-width: 1.5px;
-  }
-
-  .additionalParentLink {
-    fill: none;
-    stroke: blue;
-    stroke-width: 1.5px;
-  }
-
-  .templink {
-    fill: none;
-    stroke: red;
-    stroke-width: 3px;
-  }
-
-  .ghostCircle.show{
-      display:block;
-  }
-
-  .ghostCircle, .activeDrag .ghostCircle{
-       display: none;
-  }
-  #tree-container{
-    border: 1px solid black;
-  }
-</style>
+  <section class="hbox stretch">
+    <!-- .aside -->
+    <aside class="aside-xxl b-l b-r" id="tree-list">
+      </aside>
+      <!-- /.aside -->
+      <!-- .aside -->
+      <aside id="note-detail">
+        <script type="text/template" id="note-template">
+          <section class="vbox">
+            <header class="header bg-light lter bg-gradient b-b">
+              <p> being created by: <strong>USER NAME</strong></p>
+                 <p id="note-date" > </p>
+            </header>
+            <section class="bg-light lter">
+              <section class="hbox stretch">
+                <aside>
+                  <section class="vbox b-b">
+                    <section class="paper">
+                        <textarea type="text" class="form-control scrollable" placeholder="Type your note here"></textarea>
+                    </section>
+                  </section>
+                </aside>
+              </section>
+            </section>
+          </section>
+        </script>
+      </aside>
+      <!-- /.aside -->
+      <!-- .aside -->
+      <aside class="aside-xl b-l b-r" id="note-list">
+        <section class="vbox flex">
+         <header class="header clearfix" style="text-align: right">
+            <span class="pull-left m-t"><button class="btn btn-dark btn-sm btn-icon" id="new-note" data-toggle="tooltip" data-placement="right" title="New"><i class="fa fa-plus"></i></button></span>
+            <p class="h1">Notester</p>
+            <div class="input-group m-t-sm m-b-sm">
+              <span class="input-group-addon input-sm"><i class="fa fa-search"></i></span>
+              <input type="text" class="form-control input-sm" id="search-note" placeholder="search">
+            </div>
+          </header>
+          <section id="treeholder">
+            <section>
+              <section>
+                <div class="padder">
+                  <!-- note list -->
+                  <ul id="note-items" class="list-group list-group-sp"></ul>
+                    <!-- templates -->
+                    <script type="text/template" id="item-template">
+                      <div class="view" id="note-< id %>">
+                        <button class="destroy close hover-action">&times;</button>
+                        <div class="note-name">
+                          <strong>
+                            note title
+                          </strong>
+                        </div>
+                        <div class="note-desc">
+                          description
+                        </div>
+                        <span class="text-xs text-muted"></span>
+                      </div>
+                    </script>
+                    <!-- / template  -->
+                  <!-- note list -->
+                  <p class="text-center">&nbsp;</p>
+                </div>
+              </section>
+            </section>
+          </section>
+        </section>
+      </aside>
+      <!-- /.aside -->
+</section>
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="http://d3js.org/d3.v3.min.js"></script>
-<script >
-
-
-var margin = {top: 10, right: 10, bottom: 10, left: 10},
-    width = 500 - margin.right - margin.left,
-    height = 1000 - margin.top - margin.bottom;
-
-var i = 0,
-    duration = 750,
-    root;
-
-var tree = d3.layout.tree()
-    .size([height, width]);
-
-var diagonal = d3.svg.diagonal()
-    .projection(function(d) { return [d.y, d.x]; });
-
-var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.right + margin.left)
-    .attr("height", height + margin.top + margin.bottom)
-    .attr("style", "outline: thin solid green;")
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-d3.json("http://notester.herokuapp.com/category", function(error, trees) {
-  if (error) throw error;
-  root = JSON.parse(trees.flareTree);
-  // root = JSON.parse(trees.programmingLanguagesTree);
-
-  root.x0 = height / 2;
-  root.y0 = 0;
-  console.log(root)
-  function collapse(d) {
-    if (d.children) {
-      d._children = d.children;
-      d._children.forEach(collapse);
-      d.children = null;
-    }
-  }
-
-  root.children.forEach(collapse);
-  update(root);
-});
-
-d3.select(self.frameElement).style("height", "800px");
-
-function update(source) {
-
-  // Compute the new tree layout.
-  var nodes = tree.nodes(root).reverse(),
-      links = tree.links(nodes);
-
-  // Normalize for fixed-depth.
-  nodes.forEach(function(d) { d.y = d.depth * 100; });
-
-  // Update the nodes…
-  var node = svg.selectAll("g.node")
-      .data(nodes, function(d) { return d.id || (d.id = ++i); });
-
-  // Enter any new nodes at the parent's previous position.
-    var nodeEnter = node.enter().append("g")
-      .attr("class", "node")
-      .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-      .on("click", click);
-
-  nodeEnter.append("circle")
-      .attr("r", 1e-6)
-      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
-
-
-  nodeEnter.append("text")
-      .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
-      .attr("dy", ".35em")
-      .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-      .text(function(d) { return d.name; })
-      .style("fill-opacity", 1e-6);
-
-  // Transition nodes to their new position.
-  var nodeUpdate = node.transition()
-      .duration(duration)
-      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
-
-  nodeUpdate.select("circle")
-      .attr("r", 4.5)
-      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
-
-  nodeUpdate.select("text")
-      .style("fill-opacity", 1);
-
-  // Transition exiting nodes to the parent's new position.
-  var nodeExit = node.exit().transition()
-      .duration(duration)
-      .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
-      .remove();
-
-  nodeExit.select("circle")
-      .attr("r", 1e-6);
-
-  nodeExit.select("text")
-      .style("fill-opacity", 1e-6);
-
-  // Update the links…
-  var link = svg.selectAll("path.link")
-      .data(links, function(d) { return d.target.id; });
-
-  // Enter any new links at the parent's previous position.
-  link.enter().insert("path", "g")
-      .attr("class", "link")
-      .attr("d", function(d) {
-        var o = {x: source.x0, y: source.y0};
-        return diagonal({source: o, target: o});
-      });
-
-  // Transition links to their new position.
-  link.transition()
-      .duration(duration)
-      .attr("d", diagonal);
-
-  // Transition exiting nodes to the parent's new position.
-  link.exit().transition()
-      .duration(duration)
-      .attr("d", function(d) {
-        var o = {x: source.x, y: source.y};
-        return diagonal({source: o, target: o});
-      })
-      .remove();
-
-  // Stash the old positions for transition.
-  nodes.forEach(function(d) {
-    d.x0 = d.x;
-    d.y0 = d.y;
-  });
-}
-
-// Toggle children on click.
-function click(d) {
-  console.log(d);
-  if (d.children) {
-    d._children = d.children;
-    d.children = null;
-  } else {
-    d.children = d._children;
-    d._children = null;
-  }
-  update(d);
-}
-</script>
-<body>
-    <div id="tree-container"></div>
-</body>
-</html>
-<!--
- contain a total of five attributes (and corresponding values), all of which could be set with attr():
-
-class   |   caption
-id      |   country
-src     |   logo.png
-width   |   100px
-alt     |   Logo
-
-///Horizontal Tree
-var margin = {top: 50, right: 50, bottom: 20, left: 120},
-    width = 1000 - margin.right - margin.left,
-    height = 1000 - margin.top - margin.bottom;
-
-var i = 0,
-    duration = 750,
-    root;
-
-var tree = d3.layout.tree()
-    .size([height, width]);
-
-var diagonal = d3.svg.diagonal()
-    .projection(function(d) { return [d.x, d.y]; });
-
-var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.right + margin.left)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-d3.json("http://localhost:3000/category", function(error, trees) {
-  if (error) throw error;
-  root = JSON.parse(trees.flareTree);
-  // root = JSON.parse(trees.programmingLanguagesTree);
-
-  root.x0 = height / 2;
-  root.y0 = 0;
-  console.log(root)
-  function collapse(d) {
-    if (d.children) {
-      d._children = d.children;
-      d._children.forEach(collapse);
-      d.children = null;
-    }
-  }
-
-  root.children.forEach(collapse);
-  update(root);
-});
-
-d3.select(self.frameElement).style("height", "800px");
-
-function update(source) {
-
-  // Compute the new tree layout.
-  var nodes = tree.nodes(root).reverse(),
-      links = tree.links(nodes);
-
-  // Normalize for fixed-depth.
-  nodes.forEach(function(d) { d.y = d.depth * 180; });
-
-  // Update the nodes…
-  var node = svg.selectAll("g.node")
-      .data(nodes, function(d) { return d.id || (d.id = ++i); });
-
-  // Enter any new nodes at the parent's previous position.
-  var nodeEnter = node.enter().append("g")
-      .attr("class", "node")
-      .attr("transform", function(d) { return "translate(" + source.x0 + "," + source.y0 + ")"; })
-      .on("click", click);
-    // var nodeEnter = node.enter().append("g")
-    //   .attr("class", "node")
-    //   .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-    //   .on("click", click);
-
-  nodeEnter.append("circle")
-      .attr("r", 1e-6)
-      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
-
-  nodeEnter.append("text")
-    .attr("y", function(d) {
-      return d.children || d._children ? -18 : 18; })
-    .attr("dy", ".35em")
-    .attr("text-anchor", "middle")
-    .text(function(d) { return d.name; })
-    .style("fill-opacity", 1);
-  // nodeEnter.append("text")
-  //     .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
-  //     .attr("dy", ".35em")
-  //     .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-  //     .text(function(d) { return d.name; })
-  //     .style("fill-opacity", 1e-6);
-
-  // Transition nodes to their new position.
-    var nodeUpdate = node.transition()
-      .duration(duration)
-      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-  // var nodeUpdate = node.transition()
-  //     .duration(duration)
-  //     .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
-
-  nodeUpdate.select("circle")
-      .attr("r", 4.5)
-      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
-
-  nodeUpdate.select("text")
-      .style("fill-opacity", 1);
-
-  // Transition exiting nodes to the parent's new position.
-    var nodeExit = node.exit().transition()
-      .duration(duration)
-      .attr("transform", function(d) { return "translate(" + source.x + "," + source.y + ")"; })
-      .remove();
-  // var nodeExit = node.exit().transition()
-  //     .duration(duration)
-  //     .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
-  //     .remove();
-
-  nodeExit.select("circle")
-      .attr("r", 1e-6);
-
-  nodeExit.select("text")
-      .style("fill-opacity", 1e-6);
-
-  // Update the links…
-  var link = svg.selectAll("path.link")
-      .data(links, function(d) { return d.target.id; });
-
-  // Enter any new links at the parent's previous position.
-  // link.enter().insert("path", "g")
-  //   .attr("class", "link")
-  //   .attr("d", diagonal);
-  link.enter().insert("path", "g")
-      .attr("class", "link")
-      .attr("d", function(d) {
-        var o = {x: source.x0, y: source.y0};
-        return diagonal({source: o, target: o});
-      });
-
-  // Transition links to their new position.
-  link.transition()
-      .duration(duration)
-      .attr("d", diagonal);
-
-  // Transition exiting nodes to the parent's new position.
-  link.exit().transition()
-      .duration(duration)
-      .attr("d", function(d) {
-        var o = {x: source.x, y: source.y};
-        return diagonal({source: o, target: o});
-      })
-      .remove();
-
-  // Stash the old positions for transition.
-  nodes.forEach(function(d) {
-    d.x0 = d.x;
-    d.y0 = d.y;
-  });
-}
--->

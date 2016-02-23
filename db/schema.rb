@@ -1,4 +1,4 @@
-# encoding: UTF-8
+: # encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20160202001800) do
   create_table "categories", force: :cascade do |t|
     t.string   "name"
     t.integer  "parent_category_id"
+    t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
