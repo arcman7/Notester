@@ -11,6 +11,7 @@
  * file per style scope.
  *=
  *= require bootstrap_folder
+ *= require tree
  *= require_tree .
  *= require_self
  */

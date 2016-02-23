@@ -2593,7 +2593,7 @@ fieldset[disabled] .form-control {
   cursor: not-allowed;
 }
 textarea.form-control {
-  height: auto;
+  height: 750px;
 }
 input[type="search"] {
   -webkit-appearance: none;
