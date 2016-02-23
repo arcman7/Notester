@@ -9,7 +9,7 @@ class UserController < ApplicationController
       set_current_user(@user)
       redirect_to 'show'
     else
-      render 'users_create_path'
+      render 'new_user_path'
     end
   end
   private
