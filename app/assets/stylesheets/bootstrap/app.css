@@ -1311,11 +1311,15 @@ fieldset[disabled] .btn-default.active {
   border-color: rgba(0,0,0,0.1);
   background-clip: padding-box;
 }
-.btn-primary {
+.btn-primary,
+.btn-green {
   color: #fff !important;
   background-color: #65bd77;
   border-color: #65bd77;
 }
+.btn-green:hover,
+.btn-green:focus,
+.btn-green:active,
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active,
@@ -3259,3 +3263,4 @@ fieldset[disabled] .btn-gplus.active {
     padding: 15px;
   }
 }
+
