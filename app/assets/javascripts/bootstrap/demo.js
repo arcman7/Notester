@@ -21,6 +21,11 @@
           position: 'left'
         },
         {
+          element: '#new-note',
+          intro: '<p class="h4 text-uc"><strong>2: Save the note</strong></p><p>Press this button to save your note.</p>',
+          position: 'left'
+        },
+        {
           element: '#note-list',
           intro: '<p class="h4 text-uc"><strong>3: Recent Notes</strong></p><p>See your recent notes being displayed.</p>',
           position: 'left'
