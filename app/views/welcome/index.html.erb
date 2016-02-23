@@ -9,8 +9,14 @@
         <script type="text/template" id="note-template">
           <section class="vbox">
             <header class="header bg-light lter bg-gradient b-b">
-              <p> being created by: <strong>USER NAME</strong></p>
-                 <p id="note-date" > </p>
+              <p id="social-buttons">
+                  <a style="color: steelblue" href="#" class="btn-rounded btn-sm btn-icon"><i class="fa fa-circle"></i></a>
+                  <a style="color: #65bd77" href="#" class="btn-rounded btn-sm btn-icon"><i class="fa fa-circle"></i></a>
+              </p>
+              <span class="pull-right">
+                <p> being created by: <strong>USER NAME</strong></p>
+                <p id="note-date" > </p>
+              <span>
             </header>
             <section class="bg-light lter">
               <section class="hbox stretch">
@@ -31,8 +37,9 @@
       <aside class="aside-xl b-l b-r" id="note-list">
         <section class="vbox flex">
          <header class="header clearfix" style="text-align: right">
-            <span class="pull-left m-t"><button class="btn btn-dark btn-sm btn-icon" id="new-note" data-toggle="tooltip" data-placement="right" title="New"><i class="fa fa-plus"></i></button></span>
-            <p class="h1">Notester</p>
+            <span class="pull-left m-t"><button class="btn btn-green btn-sm btn-icon" id="new-note" data-toggle="tooltip" data-placement="left" title="New"><i class="fa fa-plus"></i></button></span>
+            <span style="margin-left: 2%"class="pull-left m-t"><button class="btn btn-green btn-sm btn-icon" id="save-note" data-toggle="tooltip" data-placement="right" title="Save"><i class="fa fa-save"></i></button></span>
+            <p id="notester-header" class="h1">Notester</p>
             <div class="input-group m-t-sm m-b-sm">
               <span class="input-group-addon input-sm"><i class="fa fa-search"></i></span>
               <input type="text" class="form-control input-sm" id="search-note" placeholder="search">
@@ -46,7 +53,7 @@
                   <ul id="note-items" class="list-group list-group-sp"></ul>
                     <!-- templates -->
                     <script type="text/template" id="item-template">
-                      <div class="view" id="note-< id %>">
+                      <div class="view">
                         <button class="destroy close hover-action">&times;</button>
                         <div class="note-name">
                           <strong>
