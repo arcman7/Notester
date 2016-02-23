@@ -6,11 +6,7 @@ Rails.application.routes.draw do
   resources :welcome, only: [:index]
 
   resources :user
-  get 'sessions/new' => 'signin'
-  post '/sessions' => 'sessions#create'
-  delete 'sessions/:id' => 'sessions#destroy'
-  post 'users' => 'users#create'
-  get '/sessions/destroy' => 'sessions#destroy'
+  resources :session, ony: [:new, :create]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

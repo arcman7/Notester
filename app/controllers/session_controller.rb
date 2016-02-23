@@ -1,4 +1,4 @@
-class SessionsController < ApplicationController
+class SessionController < ApplicationController
   def new
     @user = User.new
   end
@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
       set_current_user(@user)
       redirect_to root_path
     else
-      render '/sessions/new'
+      render '/session/new'
     end
   end
   def destroy
