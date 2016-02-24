@@ -18,10 +18,10 @@
               </p>
               <span class="pull-right">
                 <% if session[:user_id] == nil %>
-                    <p> being created by: <strong>USER NAME</strong></p>
+                    <p> being created by: <strong>ANON</strong></p>
                 <% else %>
                     <% user = User.find(session[:user_id]) %>
-                    <p><%= user.email%></p>
+                    <p id="user-email"><%= user.email%></p>
                 <% end %>
                 <p id="note-date" > </p>
               <span>
@@ -31,7 +31,7 @@
                 <aside>
                   <section class="vbox b-b">
                     <section class="paper">
-                        <textarea type="text" class="form-control scrollable" placeholder="Type your note here"></textarea>
+                        <textarea type="text" id="note-text-area" class="form-control scrollable" placeholder="Type your note here"></textarea>
                     </section>
                   </section>
                 </aside>
@@ -46,7 +46,11 @@
         <section class="vbox flex">
          <header class="header clearfix" style="text-align: right">
             <span class="pull-left m-t"><button class="btn btn-green btn-sm btn-icon" id="new-note" data-toggle="tooltip" data-placement="left" title="New"><i class="fa fa-plus"></i></button></span>
-            <span style="margin-left: 2%"class="pull-left m-t"><button class="btn btn-green btn-sm btn-icon" id="save-note" data-toggle="tooltip" data-placement="right" title="Save"><i class="fa fa-save"></i></button></span>
+            <% if session[:user_id] %>
+              <span style="margin-left: 2%"class="pull-left m-t"><button class="btn btn-green btn-sm btn-icon" id="save-note" data-toggle="tooltip" data-placement="right" title="Save"><i class="fa fa-save"></i></button></span>
+            <%else %>
+              <span style="margin-left: 2%"class="pull-left m-t"><button class="btn btn-green btn-sm btn-icon" id="save-note" data-toggle="tooltip" data-placement="right" title="Save" onclick="signUp()"><i class="fa fa-save"></i></button></span>
+            <% end %>
             <p id="notester-header" class="h1">Notester</p>
             <div class="input-group m-t-sm m-b-sm">
               <span class="input-group-addon input-sm"><i class="fa fa-search"></i></span>
