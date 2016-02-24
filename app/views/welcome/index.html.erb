@@ -12,10 +12,17 @@
               <p id="social-buttons">
                   <a style="color: steelblue" href="#" class="btn-rounded btn-sm btn-icon"><i class="fa fa-circle"></i></a>
                   <a style="color: #65bd77" href="#" class="btn-rounded btn-sm btn-icon"><i class="fa fa-circle"></i></a>
-                  <%= link_to "Log out", '/logout', method: :post %>
+                   <% if session[:user_id] %>
+                      <%= link_to "Log out", '/logout', method: :post %>
+                   <% end %>
               </p>
               <span class="pull-right">
-                <p> being created by: <strong>USER NAME</strong></p>
+                <% if session[:user_id] == nil %>
+                    <p> being created by: <strong>USER NAME</strong></p>
+                <% else %>
+                    <% user = User.find(session[:user_id]) %>
+                    <p><%= user.email%></p>
+                <% end %>
                 <p id="note-date" > </p>
               <span>
             </header>
