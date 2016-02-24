@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
     width = 397 - margin.right - margin.left,
-    height = 800 - margin.top - margin.bottom;
+    height = 750 - margin.top - margin.bottom;
 
 var i = 0,
     duration = 750,

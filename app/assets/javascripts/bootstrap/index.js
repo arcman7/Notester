@@ -27,16 +27,6 @@ document.addEventListener('DOMContentLoaded', function () {
       strSignIn += "  <\/div>";
       strSignIn += "<\/section>";
 
-
-
- var signInLink = document.getElementById("signInLink");
- var signIn = function(){
-    signInLink.addEventListener('click', function(){
-        bootbox.alert(strSignIn, function() {
-        });
-    })
-  }
-
     var strSignUp="";
         strSignUp += "<section id=\"content\" class=\"m-t-lg wrapper-md animated fadeInDown\">";
         strSignUp += "  <div class=\"container aside-xxl\">";
@@ -68,13 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
         strSignUp += "  <\/div>";
         strSignUp += "<\/section>";
 
-var textArea = document.getElementByClass("form-control");
-var userEmail = document.getElementByClass("user-email");
-$.ajax({
-  url: "https://notester.herokuapp.com/resource",
-  type: "POST",
-  data: {resource: {title: , description: textArea.val()}, user_email: userEmail.val()}
-})
+
   var saveNote = document.getElementById("save-note");
   var signUp = function(){
     saveNote.addEventListener('click', function(){
@@ -83,6 +67,24 @@ $.ajax({
     })
   }
   signUp();
+
+
+ var signInLink = document.getElementById("signInLink");
+ var signIn = function(){
+    signInLink.addEventListener('click', function(){
+        bootbox.alert(strSignIn, function() {
+        });
+    })
+  }
+
+
+var textArea = document.getElementsByClassName("form-control");
+var userEmail = document.getElementsByClassName("user-email");
+// $.ajax({
+//   url: "https://notester.herokuapp.com/resource",
+//   type: "POST",
+//   data: {resource: {title: , description: textArea.val()}, user_email: userEmail.val()}
+// })
 
 
 
