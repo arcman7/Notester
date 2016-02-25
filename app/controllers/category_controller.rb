@@ -31,11 +31,12 @@ class CategoryController < ApplicationController
   end
 
   def show
-    if Category.exists? params[:id]
-      @category = Category.find(params[:id])
-      render json: { category: @category, children: @category.sub_categories }
+    @category = Category.find_by(name: params[:id])
+
+    if @category
+      render json: { category_description: @category.description, children: @category.sub_categories }
     else
-      render json: {error: "resource not found"}
+      render json: {error: "category not found"}
     end
   end #show
 

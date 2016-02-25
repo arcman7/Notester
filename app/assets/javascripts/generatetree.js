@@ -1,8 +1,12 @@
+var route;
+
 $(document).on('ready', function () {
 
 treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, treeData) {
-    treeData = JSON.parse(treeData.flareTree);
+    //treeData = JSON.parse(treeData.flareTree);
+    treeData = JSON.parse(treeData.programmingLanguagesTree);
 
+    route = 'category';
     // Calculate total nodes, max label length
     var totalNodes = 0;
     var maxLabelLength = 0;
@@ -288,6 +292,13 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
     // Toggle children on click.
 
     function click(d) {
+        //console.log(d.name);
+        $.ajax({
+            url: protocol + '//' + domain + '/' + route + '/' + d.name,
+            type: "GET"
+        }).done(function (response){
+            console.log(response);
+        });//end ajax call done
         if (d3.event.defaultPrevented) return; // click suppressed
         d = toggleChildren(d);
         update(d);

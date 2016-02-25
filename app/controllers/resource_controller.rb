@@ -9,8 +9,8 @@ class ResourceController < ApplicationController
 
   def create
     @new_resource = Resource.new(params.require(:resource).permit(:title, :description, :file) )
-    if params[:user_email]
-      @user = User.find_by(email: params[:user_email])
+    if params[:username]
+      @user = User.find_by(username: params[:username])
     end
 
     begin
@@ -23,17 +23,23 @@ class ResourceController < ApplicationController
   end
 
   def show
-     if Resource.exists? params[:id]
-        @resource = Resource.find(params[:id])
-        render json: { resource: @resource, children: @resource.children }
+    @resource = Resource.find_by(title: params[:id]) #better to use resource names rather than id for now
+     if @resource
+        render json: { resource_description: @resource.description, children: @resource.children}
      else
         render json: {error: "resource not found"}
      end
   end#show
 
   def get_user_tree
-    @user = User.find_by(email: params[:user_email])
-
+    @user = User.find_by(username: params[:username])
+    if(params[:resource]) #:resource => should be the resource name
+      @tree = @user.trees.find_by(title: params[:resource])
+    }
+    else{
+      @tree = @user.trees.order("created_at").first
+    }
+    render json: {tree: @tree.get_tree_resources}
   end
 
   def update
