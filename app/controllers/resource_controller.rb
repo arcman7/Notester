@@ -35,10 +35,10 @@ class ResourceController < ApplicationController
     @user = User.find_by(username: params[:username])
     if(params[:resource]) #:resource => should be the resource name
       @tree = @user.trees.find_by(title: params[:resource])
-    }
-    else{
+
+    else
       @tree = @user.trees.order("created_at").first
-    }
+    end
     render json: {tree: @tree.get_tree_resources}
   end
 
