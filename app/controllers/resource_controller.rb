@@ -30,7 +30,13 @@ class ResourceController < ApplicationController
         render json: {error: "resource not found"}
      end
   end#show
-    def update
+
+  def get_user_tree
+    @user = User.find_by(email: params[:user_email])
+
+  end
+
+  def update
     if Resouce.exists? params[:id]
       @resource = resource.find(params[:id])
       @resource.update(params.require(:resource).permit(:description, :title, :parent))

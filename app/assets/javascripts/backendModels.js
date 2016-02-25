@@ -8,5 +8,8 @@ function ResourceModel(title,description,parent_name){
   this.parent = parent_name;
 }
 
+var locationArray = window.location.href.split('/');
+var protocol      = locationArray[0];
+var domain        = locationArray[2];
 
 //data: new ResourceModel("jimmy","note contents","bean")
