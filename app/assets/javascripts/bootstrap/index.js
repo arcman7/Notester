@@ -58,13 +58,24 @@ document.addEventListener('DOMContentLoaded', function () {
         strSignUp += "  <\/div>";
         strSignUp += "<\/section>";
 
+  var strInput ="";
+      strInput += "<div class=\"col-sm-6\"> <input type=\"text\" class=\"form-control rounded\"> <\/div>";
 
   var saveNote = document.getElementById("save-note");
+
   var signUp = function(){
-    saveNote.addEventListener('click', function(){
-        bootbox.alert(strSignUp, function() {
+    if (localStorage.notesterUser !== 'Anon' || localStorage.notesterUser !== undefined){
+      saveNote.addEventListener('click', function(){
+        bootbox.alert(strInput, function() {
         });
-    })
+      })
+    }
+    else{
+      saveNote.addEventListener('click', function(){
+            bootbox.alert(strSignUp, function() {
+          });
+      })
+    }
   }
   signUp();
 
@@ -76,21 +87,5 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     })
   }
-
-
-var textArea = document.getElementsByClassName("form-control");
-var userEmail = document.getElementsByClassName("user-email");
-// $.ajax({
-//   url: "https://notester.herokuapp.com/resource",
-//   type: "POST",
-//   data: {resource: {title: , description: textArea.val()}, user_email: userEmail.val()}
-// })
-
-
-
-
-  saveNote.addEventListener('click', function(){
-    textarea.val()
-  });
 
 });
