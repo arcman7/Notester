@@ -1,4 +1,24 @@
-document.addEventListener('DOMContentLoaded', function () {
+
+function ajaxRes(){
+  $('#new_user').on('submit',function(e){
+  console.log("ajaxRes BITCH");
+    e.preventDefault();
+    $.ajax({
+      url: protocol +  '//' + domain +'/'+'user',
+      type: "POST",
+      data: $(this).serialize()//{ user: {username: , email: , password: } }
+    }).done(function(response){
+      if(response.errors){
+        for(var key in response.errors){
+          $('#new_user').append("<h5 style=\"color: red\">"+key+ " " + response.errors[key][0]+"!<\/h5> ");
+        }
+      }
+      console.log(response);
+    })//end ajax done
+  })
+};
+
+$(document).ready(function(){
 
   document.getElementById("note-date").outerHTML = Date();
 
@@ -35,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
         strSignUp += "      <header class=\"panel-heading text-center\">";
         strSignUp += "        <strong>Sign up<\/strong>";
         strSignUp += "      <\/header>";
-        strSignUp += "      <form action=\"\/user\" class=\"new_user\" id=\"new_user panel-body wrapper-lg\" method=\"post\">";
+        strSignUp += "      <form action=\"\/user\" id=\"new_user\" class=\"new_user panel-body wrapper-lg\" method=\"post\">";
         strSignUp += "        <div class=\"form-group\">";
         strSignUp += "          <label class=\"control-label\">Username<\/label>";
         strSignUp += "          <input type=\"text\" name=\"user[username]\" placeholder=\"eg. Your Username\" class=\"form-control input-lg\">";
@@ -48,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
         strSignUp += "          <label class=\"control-label\">Password<\/label>";
         strSignUp += "          <input type=\"password\" name=\"user[password]\" id=\"inputPassword\" placeholder=\"Type a password\" class=\"form-control input-lg\">";
         strSignUp += "        <\/div>";
-        strSignUp += "        <button type=\"submit\" class=\"btn btn-green\">Sign up<\/button>";
+        strSignUp += "        <button type=\"submit\" onClick=\"ajaxRes()\" class=\"btn btn-green\">Sign up<\/button>";
         strSignUp += "        <div class=\"line line-dashed\"><\/div>";
         strSignUp += "        <p class=\"text-muted text-center\"><small>Already have an account?<\/small><\/p>";
         strSignUp += "        <a href=\"\/session\/new\" id=\"signInLink\" onClick=\"signIn()\" class=\"btn btn-default btn-block\">Sign in<\/a>";
@@ -60,8 +80,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var saveNoteButton = document.getElementById("save-note");
 
+
+
   var signUp = function(){
-    if (localStorage.notesterUser !== 'Anon' || localStorage.notesterUser !== undefined){ //means we're logged in
+    if (localStorage.notesterUser !== 'Anon' && localStorage.notesterUser !== undefined){ //means we're logged in
       saveNoteButton.addEventListener('click', function(){
        bootbox.prompt("Title name:", function(result) {
           var date = new Date();
@@ -77,10 +99,19 @@ document.addEventListener('DOMContentLoaded', function () {
         });//end event listener
     }
     else {
-      console.log('else')
       saveNoteButton.addEventListener('click', function(){
-            bootbox.alert(strSignUp, function() {
+            bootbox.alert(strSignUp, function() {//preventing signup form default
           });
+          // $('#new_user').on('submit',function(e){
+          //       e.preventDefault();
+          //       $.ajax({
+          //         url: protocol +  '//' + domain +'/'+'user',
+          //         type: "POST",
+          //         data: $(this).serialize()//{ user: {username: , email: , password: } }
+          //       }).done(function(response){
+          //         console.log(response);
+          //       })//end ajax done
+          //     })
       })
     }
   }

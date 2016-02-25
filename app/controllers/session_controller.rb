@@ -6,9 +6,10 @@ class SessionController < ApplicationController
     @user = User.find_by(email: params[:email])
     if @user.email && @user.authenticate(params[:password])
       set_current_user(@user)
-      redirect_to root_path
+      #redirect_to root_path
+      render json: {username: @user.username}
     else
-      redirect_to '/session/new'
+      render '/session/new'
     end
   end
   def destroy

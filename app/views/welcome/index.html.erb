@@ -25,10 +25,10 @@
               </p>
               <span class="pull-right">
                 <% if session[:user_id] == nil %>
-                    <p> being created by: <strong id="storageUsername">Anon</strong></p>
+                    <p>Hello <strong  style="color: red;" id="user-username"></strong>!</p>
                 <% else %>
                     <% user = User.find(session[:user_id]) %>
-                    <p id="user-email"><%= user.email%></p>
+                    <p> Hello  <strong><span style="color: #65bd77;" id="user-username"></span></strong>!</p>
                 <% end %>
                 <p id="note-date" > </p>
               <span>

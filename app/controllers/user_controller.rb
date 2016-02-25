@@ -17,12 +17,32 @@ class UserController < ApplicationController
   end
 
   def create
-   @user = User.new(user_params)
+   @user = User.create(user_params)
+
     if @user.save
       set_current_user(@user)
-      redirect_to root_path
+      render json: {username: @user.username}
     else
-      render 'user/new'
+      if @user.errors.any? # If there are errors, do something
+        # @users.errors.full_messages.each do |message|
+        #   p message
+        # end
+
+    #   # To get all errors associated with a single attribute, do the following:
+    #   if @user.errors.include?(:name)
+    #     name_errors = @user.errors.on(:name)
+    #     if name_errors.kind_of?(Array)
+    #       name_errors.each do |error|
+    #         # do stuff for each error on the name attribute
+    #       end
+    #     else
+    #       error = name_errors
+    #       # do stuff for the one error on the name attribute.
+    #     end
+    #   end
+    # end
+        render json: {errors: @user.errors}
+      end
     end
   end
   private
