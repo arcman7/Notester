@@ -1,9 +1,7 @@
-document.addEventListener('DOMContentLoaded', function () {
-// Get JSON data
-treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, trees) {
-    //console.log(trees)
-    root = JSON.parse(trees.flareTree);
-    var treeData = root;
+$(document).on('ready', function () {
+
+treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, treeData) {
+    treeData = JSON.parse(treeData.flareTree);
 
     // Calculate total nodes, max label length
     var totalNodes = 0;
@@ -20,8 +18,8 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
     var root;
 
     // size of the diagram
-    var viewerWidth = $('#tree-list').width(); //397// $(document).width();
-    var viewerHeight = $('#tree-list').height();///$(document).height();
+    var viewerWidth = 397//$(document).width();
+    var viewerHeight = 800 //$(document).height();
 
     var tree = d3.layout.tree()
         .size([viewerHeight, viewerWidth]);
@@ -68,44 +66,10 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
     // Sort the tree initially incase the JSON isn't in a sorted order.
     sortTree();
 
-    // TODO: Pan function, can be better implemented.
-
-    // function pan(domNode, direction) {
-    //     var speed = panSpeed;
-    //     if (panTimer) {
-    //         clearTimeout(panTimer);
-    //         translateCoords = d3.transform(svgGroup.attr("transform"));
-    //         if (direction == 'left' || direction == 'right') {
-    //             translateX = direction == 'left' ? translateCoords.translate[0] + speed : translateCoords.translate[0] - speed;
-    //             translateY = translateCoords.translate[1];
-    //         } else if (direction == 'up' || direction == 'down') {
-    //             translateX = translateCoords.translate[0];
-    //             translateY = direction == 'up' ? translateCoords.translate[1] + speed : translateCoords.translate[1] - speed;
-    //         }
-    //         scaleX = translateCoords.scale[0];
-    //         scaleY = translateCoords.scale[1];
-    //         scale = zoomListener.scale();
-    //         svgGroup.transition().attr("transform", "translate(" + translateX + "," + translateY + ")scale(" + scale + ")");
-    //         d3.select(domNode).select('g.node').attr("transform", "translate(" + translateX + "," + translateY + ")");
-    //         zoomListener.scale(zoomListener.scale());
-    //         zoomListener.translate([translateX, translateY]);
-    //         panTimer = setTimeout(function() {
-    //             pan(domNode, speed, direction);
-    //         }, 50);
-    //     }
-    // }
-
-    // Define the zoom function for the zoomable tree
-
-    // function zoom() {
-    //     svgGroup.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-    // }
 
 
-    // define the zoomListener which calls the zoom function on the "zoom" event constrained within the scaleExtents
-   // var zoomListener = d3.behavior.zoom().scaleExtent([0.1, 3]).on("zoom", zoom);
-
-    function initiateDrag(d, domNode) {//ends 148
+    function initiateDrag(d, domNode) {
+        //console.log("drag initiated");
         draggingNode = d;
         d3.select(domNode).select('.ghostCircle').attr('pointer-events', 'none');
         d3.selectAll('.ghostCircle').attr('class', 'ghostCircle show');
@@ -179,17 +143,17 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
             relCoords = d3.mouse($('svg').get(0));
             if (relCoords[0] < panBoundary) {
                 panTimer = true;
-                pan(this, 'left');
+                //pan(this, 'left');
             } else if (relCoords[0] > ($('svg').width() - panBoundary)) {
 
                 panTimer = true;
-                pan(this, 'right');
+                //pan(this, 'right');
             } else if (relCoords[1] < panBoundary) {
                 panTimer = true;
-                pan(this, 'up');
+               // pan(this, 'up');
             } else if (relCoords[1] > ($('svg').height() - panBoundary)) {
                 panTimer = true;
-                pan(this, 'down');
+               // pan(this, 'down');
             } else {
                 try {
                     clearTimeout(panTimer);
@@ -209,6 +173,8 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
             }
             domNode = this;
             if (selectedNode) {
+              //console.log("selected node: ",selectedNode)
+
                 // now remove the element from the parent, and insert it into the new elements children
                 var index = draggingNode.parent.children.indexOf(draggingNode);
                 if (index > -1) {
@@ -242,7 +208,7 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
         updateTempConnector();
         if (draggingNode !== null) {
             update(root);
-            centerNode(draggingNode);
+            //centerNode(draggingNode);
             draggingNode = null;
         }
     }
@@ -266,10 +232,12 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
     }
 
     var overCircle = function(d) {
+        //console.log("mouseover")
         selectedNode = d;
         updateTempConnector();
     };
     var outCircle = function(d) {
+        //console.log("mouse out")
         selectedNode = null;
         updateTempConnector();
     };
@@ -302,20 +270,6 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
         link.exit().remove();
     };
 
-    // Function to center node when clicked/dropped so node doesn't get lost when collapsing/moving with large amount of children.
-
-    // function centerNode(source) {
-    //     scale = zoomListener.scale();
-    //     x = -source.y0;
-    //     y = -source.x0;
-    //     x = x * scale + viewerWidth / 2;
-    //     y = y * scale + viewerHeight / 2;
-    //     d3.select('g').transition()
-    //         .duration(duration)
-    //         .attr("transform", "translate(" + x + "," + y + ")scale(" + scale + ")");
-    //     zoomListener.scale(scale);
-    //     zoomListener.translate([x, y]);
-    // }
 
     // Toggle children function
 
@@ -336,40 +290,16 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
         if (d3.event.defaultPrevented) return; // click suppressed
         d = toggleChildren(d);
         update(d);
-        centerNode(d);
+        //centerNode(d);
     }
 
     function update(source) {
-        // Compute the new height, function counts total children of root node and sets tree height accordingly.
-        // This prevents the layout looking squashed when new nodes are made visible or looking sparse when nodes are removed
-        // This makes the layout more consistent.
-        var levelWidth = [1];
-        var childCount = function(level, n) {
-
-            if (n.children && n.children.length > 0) {
-                if (levelWidth.length <= level + 1) levelWidth.push(0);
-
-                levelWidth[level + 1] += n.children.length;
-                n.children.forEach(function(d) {
-                    childCount(level + 1, d);
-                });
-            }
-        };
-        childCount(0, root);
-        var newHeight = d3.max(levelWidth) * 25; // 25 pixels per line
-        tree = tree.size([newHeight, viewerWidth]);
-
         // Compute the new tree layout.
         var nodes = tree.nodes(root).reverse(),
             links = tree.links(nodes);
 
-        // Set widths between levels based on maxLabelLength.
-        nodes.forEach(function(d) {
-            d.y = (d.depth * (maxLabelLength * 10)); //maxLabelLength * 10px
-            // alternatively to keep a fixed scale one can set a fixed depth per level
-            // Normalize for fixed-depth by commenting out below line
-            // d.y = (d.depth * 500); //500px per level.
-        });
+        // Normalize for fixed-depth.
+        nodes.forEach(function(d) { d.y = d.depth * 100; });
 
         // Update the nodes…
         node = svgGroup.selectAll("g.node")
@@ -511,6 +441,7 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
             d.y0 = d.y;
         });
     }
+
     // Append a group which holds all nodes and which the zoom Listener can act upon.
     var svgGroup = baseSvg.append("g");
 
@@ -518,206 +449,13 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
     root = treeData;
     root.x0 = viewerHeight / 2;
     root.y0 = 0;
+    root.children.forEach(collapse);
 
     // Layout the tree initially and center on the root node.
     update(root);
-    })//experiment ///ends d3.getjson
-});
-    //centerNode(root);
 
-  // var couplingParent1 = tree.nodes(root).filter(function(d) {
-  //           return d['name'] === 'cluster';
-  //       })[0];
-  // var couplingChild1 = tree.nodes(root).filter(function(d) {
-  //           return d['name'] === 'JSONConverter';
-  //       })[0];
 
-//   multiParents = [{
-//                     parent: couplingParent1,
-//                     child: couplingChild1
-//                 }];
+})//end d3 getjson
 
-//   multiParents.forEach(function(multiPair) {
-//             svgGroup.append("path", "g")
-//             .attr("class", "additionalParentLink")
-//                 .attr("d", function() {
-//                     var oTarget = {
-//                         x: multiPair.parent.x0,
-//                         y: multiPair.parent.y0
-//                     };
-//                     var oSource = {
-//                         x: multiPair.child.x0,
-//                         y: multiPair.child.y0
-//                     };
-//                     /*if (multiPair.child.depth === multiPair.couplingParent1.depth) {
-//                         return "M" + oSource.y + " " + oSource.x + " L" + (oTarget.y + ((Math.abs((oTarget.x - oSource.x))) * 0.25)) + " " + oTarget.x + " " + oTarget.y + " " + oTarget.x;
-//                     }*/
-//                     return diagonal({
-//                         source: oSource,
-//                         target: oTarget
-//                     });
-//                 });
-//         });
-// });
-
-// <!--
-//  contain a total of five attributes (and corresponding values), all of which could be set with attr():
-
-// class   |   caption
-// id      |   country
-// src     |   logo.png
-// width   |   100px
-// alt     |   Logo
-
-// ///Horizontal Tree
-// var margin = {top: 50, right: 50, bottom: 20, left: 120},
-//     width = 1000 - margin.right - margin.left,
-//     height = 1000 - margin.top - margin.bottom;
-
-// var i = 0,
-//     duration = 750,
-//     root;
-
-// var tree = d3.layout.tree()
-//     .size([height, width]);
-
-// var diagonal = d3.svg.diagonal()
-//     .projection(function(d) { return [d.x, d.y]; });
-
-// var svg = d3.select("body").append("svg")
-//     .attr("width", width + margin.right + margin.left)
-//     .attr("height", height + margin.top + margin.bottom)
-//   .append("g")
-//     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-// d3.json("http://localhost:3000/category", function(error, trees) {
-//   if (error) throw error;
-//   root = JSON.parse(trees.flareTree);
-//   // root = JSON.parse(trees.programmingLanguagesTree);
-
-//   root.x0 = height / 2;
-//   root.y0 = 0;
-//   console.log(root)
-//   function collapse(d) {
-//     if (d.children) {
-//       d._children = d.children;
-//       d._children.forEach(collapse);
-//       d.children = null;
-//     }
-//   }
-
-//   root.children.forEach(collapse);
-//   update(root);
-// });
-
-// d3.select(self.frameElement).style("height", "800px");
-
-// function update(source) {
-
-//   // Compute the new tree layout.
-//   var nodes = tree.nodes(root).reverse(),
-//       links = tree.links(nodes);
-
-//   // Normalize for fixed-depth.
-//   nodes.forEach(function(d) { d.y = d.depth * 180; });
-
-//   // Update the nodes…
-//   var node = svg.selectAll("g.node")
-//       .data(nodes, function(d) { return d.id || (d.id = ++i); });
-
-//   // Enter any new nodes at the parent's previous position.
-//   var nodeEnter = node.enter().append("g")
-//       .attr("class", "node")
-//       .attr("transform", function(d) { return "translate(" + source.x0 + "," + source.y0 + ")"; })
-//       .on("click", click);
-//     // var nodeEnter = node.enter().append("g")
-//     //   .attr("class", "node")
-//     //   .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-//     //   .on("click", click);
-
-//   nodeEnter.append("circle")
-//       .attr("r", 1e-6)
-//       .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
-
-//   nodeEnter.append("text")
-//     .attr("y", function(d) {
-//       return d.children || d._children ? -18 : 18; })
-//     .attr("dy", ".35em")
-//     .attr("text-anchor", "middle")
-//     .text(function(d) { return d.name; })
-//     .style("fill-opacity", 1);
-//   // nodeEnter.append("text")
-//   //     .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
-//   //     .attr("dy", ".35em")
-//   //     .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-//   //     .text(function(d) { return d.name; })
-//   //     .style("fill-opacity", 1e-6);
-
-//   // Transition nodes to their new position.
-//     var nodeUpdate = node.transition()
-//       .duration(duration)
-//       .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-//   // var nodeUpdate = node.transition()
-//   //     .duration(duration)
-//   //     .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
-
-//   nodeUpdate.select("circle")
-//       .attr("r", 4.5)
-//       .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
-
-//   nodeUpdate.select("text")
-//       .style("fill-opacity", 1);
-
-//   // Transition exiting nodes to the parent's new position.
-//     var nodeExit = node.exit().transition()
-//       .duration(duration)
-//       .attr("transform", function(d) { return "translate(" + source.x + "," + source.y + ")"; })
-//       .remove();
-//   // var nodeExit = node.exit().transition()
-//   //     .duration(duration)
-//   //     .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
-//   //     .remove();
-
-//   nodeExit.select("circle")
-//       .attr("r", 1e-6);
-
-//   nodeExit.select("text")
-//       .style("fill-opacity", 1e-6);
-
-//   // Update the links…
-//   var link = svg.selectAll("path.link")
-//       .data(links, function(d) { return d.target.id; });
-
-//   // Enter any new links at the parent's previous position.
-//   // link.enter().insert("path", "g")
-//   //   .attr("class", "link")
-//   //   .attr("d", diagonal);
-//   link.enter().insert("path", "g")
-//       .attr("class", "link")
-//       .attr("d", function(d) {
-//         var o = {x: source.x0, y: source.y0};
-//         return diagonal({source: o, target: o});
-//       });
-
-//   // Transition links to their new position.
-//   link.transition()
-//       .duration(duration)
-//       .attr("d", diagonal);
-
-//   // Transition exiting nodes to the parent's new position.
-//   link.exit().transition()
-//       .duration(duration)
-//       .attr("d", function(d) {
-//         var o = {x: source.x, y: source.y};
-//         return diagonal({source: o, target: o});
-//       })
-//       .remove();
-
-//   // Stash the old positions for transition.
-//   nodes.forEach(function(d) {
-//     d.x0 = d.x;
-//     d.y0 = d.y;
-//   });
-// }
-// -->
+});//end document ready
 
