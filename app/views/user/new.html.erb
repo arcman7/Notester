@@ -1,11 +1,11 @@
 <section id="content" class="m-t-lg wrapper-md animated fadeInDown">
   <div class="container aside-xxl">
-    <a style="font-size:50px; color: #53b567;"class="navbar-brand block" href="index.html">Notester</a>
+    <a style="font-size:50px; color: #53b567;"class="navbar-brand block" href="/">Notester</a>
     <section class="panel panel-default m-t-lg bg-white">
       <header class="panel-heading text-center">
         <strong>Sign up</strong>
       </header>
-      <form action="/user" class="new_user" id="new_user panel-body wrapper-lg" method="post">
+      <form action="/user" id="new_user" class="new_user panel-body wrapper-lg" method="post">
         <div class="form-group">
           <label class="control-label">Username</label>
           <input type="text" name="user[username]" placeholder="eg. Your Username" class="form-control input-lg">
@@ -18,10 +18,10 @@
           <label class="control-label">Password</label>
           <input type="password" name="user[password]" id="inputPassword" placeholder="Type a password" class="form-control input-lg">
         </div>
-        <button type="submit" class="btn btn-green">Sign up</button>
+        <button type="submit" onClick="ajaxRes()" class="btn btn-green">Sign up</button>
         <div class="line line-dashed"></div>
         <p class="text-muted text-center"><small>Already have an account?</small></p>
-        <a href="/session/new" onClick="signIn()" class="btn btn-default btn-block">Sign in</a>
+        <a href="/session/new" id="signInLink" onClick="signIn()" class="btn btn-default btn-block">Sign in</a>
         </div>
       </form>
     </section>

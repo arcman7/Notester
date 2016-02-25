@@ -5,7 +5,7 @@
       <header class="panel-heading text-center">
         <strong>Sign in</strong>
       </header>
-      <form action="/user" class="new_user" class="panel-body wrapper-lg" method="post">
+      <form action="/user" id="new_session" class="panel-body wrapper-lg" method="post">
         <div class="form-group">
           <label class="control-label">Email</label>
           <input type="email" name="user[email]" placeholder="test@example.com" class="form-control input-lg">
@@ -14,7 +14,7 @@
           <label class="control-label">Password</label>
           <input type="password" name="user[password]" id="inputPassword" placeholder="Password" class="form-control input-lg">
         </div>
-        <button type="submit" class="btn btn-primary">Sign in</button>
+        <button type="submit" onClick="ajaxRes()" class="btn btn-primary">Sign in</button>
         <p class="text-muted text-center"><small>Do not have an account?</small></p>
         <a href="/user/new" onClick="signUp()" class="btn btn-default btn-block">Create an account</a>
       </form>
