@@ -3,10 +3,10 @@
       <!-- .aside -->
       <aside class="aside-xxl b-l b-r" id="tree-list">
           <div style="width: 100%;" class="btn-group">
-          <button style="width: 100%; height: 50px" class="btn btn-success dropdown-toggle" data-toggle="dropdown">My notes <span class="caret"></span></button>
+          <button style="width: 100%; height: 50px" class="btn btn-green dropdown-toggle" data-toggle="dropdown">My notes <span class="caret"></span></button>
             <ul class="dropdown-menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
+              <li><a href="#">My Notes</a></li>
+              <li><a href="#">Related Notes</a></li>
               <li><a href="#">Something else here</a></li>
             </ul>
       </aside>
@@ -20,15 +20,15 @@
                   <a style="color: steelblue" href="#" class="btn-rounded btn-sm btn-icon"><i class="fa fa-circle"></i></a>
                   <a style="color: #65bd77" href="#" class="btn-rounded btn-sm btn-icon"><i class="fa fa-circle"></i></a>
                    <% if session[:user_id] %>
-                      <%= link_to "Log out", '/logout', method: :post %>
+                      <%= link_to "Log out", '/logout', onClick: "logOut()", id: 'logOutLink', method: :post %>
                    <% end %>
               </p>
               <span class="pull-right">
                 <% if session[:user_id] == nil %>
-                    <p> being created by: <strong id="storageUsername">ANON</strong></p>
+                    <p>Hello <strong  style="color: red;" id="user-username"></strong>!</p>
                 <% else %>
                     <% user = User.find(session[:user_id]) %>
-                    <p id="user-email"><%= user.email%></p>
+                    <p> Hello  <strong><span style="color: #65bd77;" id="user-username"></span></strong>!</p>
                 <% end %>
                 <p id="note-date" > </p>
               <span>
@@ -53,11 +53,7 @@
         <section class="vbox flex">
          <header class="header clearfix" style="text-align: right">
             <span class="pull-left m-t"><button class="btn btn-green btn-sm btn-icon" id="new-note" data-toggle="tooltip" data-placement="left" title="New"><i class="fa fa-plus"></i></button></span>
-            <% if session[:user_id] == nil%>
-              <span style="margin-left: 2%"class="pull-left m-t"><button class="btn btn-green btn-sm btn-icon" id="save-note" data-toggle="tooltip" data-placement="right" title="Save" onclick="signUp()" ><i class="fa fa-save"></i></button></span>
-            <%else %>
               <span style="margin-left: 2%"class="pull-left m-t"><button class="btn btn-green btn-sm btn-icon" id="save-note" data-toggle="tooltip" data-placement="right" title="Save"><i class="fa fa-save"></i></button></span>
-            <% end %>
             <p id="notester-header" class="h1">Notester</p>
             <div class="input-group m-t-sm m-b-sm">
               <span class="input-group-addon input-sm"><i class="fa fa-search"></i></span>

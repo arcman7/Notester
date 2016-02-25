@@ -58,7 +58,7 @@ function checkLocalStorage(introFunc){
 function checkForUserHistory(introFunc){
   if(localStorage.notesterUser){
     //code for returning user
-    $('#storageUsername').text(localStorage.notesterUser)
+    $('#user-username').text(localStorage.notesterUser)
   }else{
     introFunc.start();
     localStorage.notesterUser = "Anon";

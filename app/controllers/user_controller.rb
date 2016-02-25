@@ -19,12 +19,15 @@ class UserController < ApplicationController
   end
 
   def create
-   @user = User.new(user_params)
+   @user = User.create(user_params)
+
     if @user.save
       set_current_user(@user)
-      redirect_to root_path
+      render json: {username: @user.username}
     else
-      render 'user/new'
+      if @user.errors.any? # If there are errors, do something
+        render json: {errors: @user.errors}
+      end
     end
   end
 
