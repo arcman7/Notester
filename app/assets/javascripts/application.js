@@ -13,4 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require underscore
+//= require bootstrap_folder
+//= require generatetree
+//= require backendModels
+//= require underscore
 //= require_tree .

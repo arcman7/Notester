@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20160202001800) do
   create_table "categories", force: :cascade do |t|
     t.string   "name"
     t.integer  "parent_category_id"
+    t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
