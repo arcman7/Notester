@@ -205,6 +205,12 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
         });
 
     function endDrag() {
+        $.ajax({
+            url: protocol + '//' + domain + '/' + route + '/' + d.name,
+            type: "GET"
+        }).done(function (response){
+
+        });//end ajax done
         selectedNode = null;
         d3.selectAll('.ghostCircle').attr('class', 'ghostCircle');
         d3.select(domNode).attr('class', 'node');
