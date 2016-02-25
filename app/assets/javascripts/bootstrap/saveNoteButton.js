@@ -58,27 +58,33 @@ document.addEventListener('DOMContentLoaded', function () {
         strSignUp += "  <\/div>";
         strSignUp += "<\/section>";
 
-  var strInput ="";
-      strInput += "<div class=\"col-sm-6\"> <input type=\"text\" class=\"form-control rounded\"> <\/div>";
-
-  var saveNote = document.getElementById("save-note");
+  var saveNoteButton = document.getElementById("save-note");
 
   var signUp = function(){
-    if (localStorage.notesterUser !== 'Anon' || localStorage.notesterUser !== undefined){
-      saveNote.addEventListener('click', function(){
-        bootbox.alert(strInput, function() {
-        });
-      })
+    if (localStorage.notesterUser !== 'Anon' || localStorage.notesterUser !== undefined){ //means we're logged in
+      saveNoteButton.addEventListener('click', function(){
+       bootbox.prompt("Title name:", function(result) {
+          var date = new Date();
+          var title = result || "note title" + date.toString(),
+              description = document.getElementsByClassName("form-control"),
+              user_email = document.getElementById("storageUsername");
+            $.ajax({
+              type: "POST",
+              url: protocol +  '//' + domain +'/'+'resource',
+              data: new ResourceModel(title,description,user_email)
+            })
+          })
+        });//end event listener
     }
-    else{
-      saveNote.addEventListener('click', function(){
+    else {
+      console.log('else')
+      saveNoteButton.addEventListener('click', function(){
             bootbox.alert(strSignUp, function() {
           });
       })
     }
   }
   signUp();
-
 
  var signInLink = document.getElementById("signInLink");
  var signIn = function(){
