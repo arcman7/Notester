@@ -25,7 +25,7 @@ class ResourceController < ApplicationController
   def show
     @resource = Resource.find_by(title: params[:id]) #better to use resource names rather than id for now
      if @resource
-        render json: { resource_description: @resource.description, children: @resource.children}
+        render json: { description: @resource.description, children: @resource.children}
      else
         render json: {error: "resource not found"}
      end

@@ -297,7 +297,14 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
             url: protocol + '//' + domain + '/' + route + '/' + d.name,
             type: "GET"
         }).done(function (response){
-            console.log(response);
+            if(response.description){
+                $('.form-control').val(response.description);
+            }
+            else{
+                $('.form-control').val(response.error)
+            }
+            //console.log(response.description);
+
         });//end ajax call done
         if (d3.event.defaultPrevented) return; // click suppressed
         d = toggleChildren(d);

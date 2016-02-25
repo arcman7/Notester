@@ -34,7 +34,7 @@ class CategoryController < ApplicationController
     @category = Category.find_by(name: params[:id])
 
     if @category
-      render json: { category_description: @category.description, children: @category.sub_categories }
+      render json: { description: @category.description, children: @category.sub_categories }
     else
       render json: {error: "category not found"}
     end
