@@ -55,7 +55,6 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
         return d.children && d.children.length > 0 ? d.children : null;
     });
 
-
     // sort the tree according to the node names
 
     function sortTree() {
@@ -110,6 +109,8 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
 
         dragStarted = null;
     }
+    var width = 397;
+    var height = 750;
 
     // define the baseSvg, attaching a class for styling and the zoomListener
     var baseSvg = d3.select("#tree-list").append("svg")
