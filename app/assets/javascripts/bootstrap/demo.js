@@ -1,4 +1,5 @@
 +function ($) {
+
   $(function(){
 
     var intro = introJs();
@@ -39,7 +40,27 @@
       showBullets: true,
     });
 
-    intro.start();
+    checkLocalStorage(intro);
 
   });
 }(jQuery);
+
+
+function checkLocalStorage(introFunc){
+  if(typeof(Storage) !== "undefined") {
+    checkForUserHistory(introFunc);
+  } else {
+      // Sorry! No Web Storage support..
+      alert("Sorry! Your broswer does not support storage. Please use chrome, firefox or safari in order to get the full experiece of Notester.");
+  }
+}
+
+function checkForUserHistory(introFunc){
+  if(localStorage.notesterUser){
+    //code for returning user
+    $('#storageUsername').text(localStorage.notesterUser)
+  }else{
+    introFunc.start();
+    localStorage.notesterUser = "Anon";
+  }
+}

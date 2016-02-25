@@ -25,7 +25,7 @@
               </p>
               <span class="pull-right">
                 <% if session[:user_id] == nil %>
-                    <p> being created by: <strong>ANON</strong></p>
+                    <p> being created by: <strong id="storageUsername">ANON</strong></p>
                 <% else %>
                     <% user = User.find(session[:user_id]) %>
                     <p id="user-email"><%= user.email%></p>
