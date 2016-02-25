@@ -16,5 +16,6 @@
 //= require underscore
 //= require bootstrap_folder
 //= require generatetree
+//= require backendModel
 //= require underscore
 //= require_tree .
