@@ -153,7 +153,8 @@ $(document).ready(function(){
 
 
   var signUp = function(){
-    if (localStorage.notesterUser !== 'Anon' && localStorage.notesterUser !== undefined){ //means we're logged in
+    // if (localStorage.notesterUser !== 'Anon' && localStorage.notesterUser !== undefined){ //means we're logged in
+    if ($("#user-username").css("color") !== "rgb(255, 0, 0)"){
       saveNoteButton.addEventListener('click', function(){
        bootbox.prompt("Title name:", function(result) {
           var date = new Date();
