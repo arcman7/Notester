@@ -1,14 +1,13 @@
 $(document).ready(function(){
-  function change(){
+  function textListener(){
     $('body').on('click', '.form-control', function() {
-      console.log("hey");
-      test();
+      createNote();
     });
   }
-  change();
+  textListener();
 });
 
-function test(){
+function createNote(){
   $('.form-control').on('input', function() {
     console.log("heyaaa");
   });

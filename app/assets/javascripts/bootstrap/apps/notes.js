@@ -108,6 +108,7 @@ $(function(){
 
     // Click to select
     select: function(){
+      $('#note-text-area').val(this["model"]["attributes"]["description"]);
       this.active();
       app.navigate("notes/"+this.model.get('id'), {trigger: true});
     },
@@ -140,7 +141,6 @@ $(function(){
     events: {
       "click #new-note"   : "create",
       "keyup #search-note": "search",
-      "keydown form-control"   : "addOne"
     },
     // At initialization we bind to the relevant events on the
     // collection, when items are added or changed. Kick things off by
@@ -260,5 +260,4 @@ $(function(){
 
   var app = new AppRouter();
   Backbone.history.start();
-
 });
