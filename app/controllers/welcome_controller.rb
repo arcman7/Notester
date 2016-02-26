@@ -2,7 +2,9 @@ class WelcomeController < ApplicationController
   require 'json'
 
   def index
-    @user = User.find(session[:id])
+    if session[:id]
+      @user = User.find(session[:id])
+    end
     @trees = Tree.all
   end
 end
