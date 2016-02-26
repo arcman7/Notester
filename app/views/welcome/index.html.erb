@@ -13,8 +13,10 @@
                   <i class="fa fa-level-down pull-right"> </i>
                 </a>
                 <ul class="dropdown-menu">
-                  <% @user.trees.each do |tree| %>
-                  <li class="my-notes" id="<%=(tree.name || tree.title)%>"><a href="#"><%=(tree.name || tree.title)%><a></li>
+                  <% if @user %>
+                    <% @user.trees.each do |tree| %>
+                    <li class="my-notes" id="<%=(tree.name || tree.title)%>"><a href="#"><%=(tree.name || tree.title)%><a></li>
+                    <% end %>
                   <% end %>
                   <!--<li class="my-notes"><a href="#">Note 1</a></li>
                   <li class="my-notes"><a href="#">Note 2</a></li> -->
@@ -27,8 +29,10 @@
                   <i class="fa fa-level-down pull-right"> </i>
                 </a>
                 <ul class="dropdown-menu">
-                  <% @trees.each do |tree| %>
-                  <li class="public-notes" id="<%=(tree.name || tree.title)%>"><a href="#"><%=(tree.name || tree.title)%><a></li>
+                  <% if @user %>
+                    <% @trees.each do |tree| %>
+                    <li class="public-notes" id="<%=(tree.name || tree.title)%>"><a href="#"><%=(tree.name || tree.title)%><a></li>
+                    <% end %>
                   <% end %>
                   <!-- <li class="public-notes"><a href="#">Note 1</a></li>
                   <li class="public-notes"><a href="#">Note 2</a></li> -->
