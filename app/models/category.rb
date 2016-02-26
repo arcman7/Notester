@@ -34,6 +34,7 @@ class Category < ActiveRecord::Base
 
   has_many :category_tags
   has_many :tags, through: :category_tags
+  has_one  :tree
   #this method needs some work
   # def sum_subcategories_tags(tag)
   #   tag_count = 0
