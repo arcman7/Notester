@@ -215,11 +215,11 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
         if (draggingNode !== null) {
             console.log("dragging Node: ",draggingNode);
             //var description = $('.form-control').val();
-            var parent_category = draggingNode.parent.name;
+            var parent = draggingNode.parent.name;
             $.ajax({
-                url: protocol + '//' + domain + '/' + route + '/' + draggingNode.name,
+                url: protocol + '//' + domain + '/' + route + '/update_parent' + '/' + draggingNode.name,
                 type: "PATCH",
-                data: {category: {}, parent_category: parent_category}
+                data: { parent: parent}
             }).done(function (response){
                 console.log(response)
             });//end ajax done
@@ -483,8 +483,7 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
     // Layout the tree initially and center on the root node.
     update(root);
 
-
-})//end d3 getjson
-
+ });//end d3 getjson
 });//end document ready
+
 

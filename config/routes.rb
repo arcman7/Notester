@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   resources :user
   resources :session, ony: [:new, :create, :destroy]
   post '/logout' => 'session#destroy'
+  patch 'category/update_parent/:id' => 'category#update_parent'
+  patch 'resource/update_parent/:id' => 'resource#update_parent'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

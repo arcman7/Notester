@@ -43,14 +43,23 @@ class CategoryController < ApplicationController
   def update
     @category = Category.find_by(name: params[:id])
     if @category
-      #@category.update(params.require(:category).permit(:description, :name))
-      @parent_category = Category.find_by(name: params[:parent_category])
-      @old_parent = @category.parent_category
-      @old_parent.sub_categories.delete(@category)
-      @parent_category.sub_categories << @category
+      @category.update(params.require(:category).permit(:description, :name))
       render json: {success: "update complete"}
     else
       render json: {error: "category not found"}
     end
   end#update
+
+  def update_parent
+    @category = Category.find_by(name: params[:id])
+    @parent   = Category.find_by(name: params[:parent])
+    if @category && @parent
+      @old_parent = @category.parent_category
+      @old_parent.sub_categories.delete(@category)
+      @parent.sub_categories << @category
+    else
+      render json: {error: "update was not successful"}
+    end
+    render json: {update: "successful"}#, :status => 200
+  end
 end
