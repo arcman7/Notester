@@ -303,6 +303,7 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
 
     function click(d) {
         //console.log(d.name);
+        $('#note-title').text(d.name); //Set the note title at the top of the page
         $.ajax({
             url: protocol + '//' + domain + '/' + route + '/' + d.name,
             type: "GET"
