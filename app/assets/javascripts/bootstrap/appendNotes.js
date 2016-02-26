@@ -1,9 +1,9 @@
 $(document).ready(function(){
   // localStorage
-  var noteTitle = $('#note-title').text();
-if($('.form-control').keydown()){
-  console.log('down')
-}
+//   var noteTitle = $('#note-title').text();
+// if($('.form-control').keydown()){
+//   console.log('down')
+// }
 
 })
 
