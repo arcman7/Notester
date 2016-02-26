@@ -1,11 +1,28 @@
 var route;
 
 $(document).on('ready', function () {
+    //generateTree("https://notester.herokuapp.com/category");
+    generateTree("http://localhost:3000/category");
+    publicTreeSearch();
+});
 
-treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, treeData) {
+function publicTreeSearch(){
+    $('.public-notes').click(function()
+    {
+        var id = $(this).text();
+        var url = protocol + '//' + domain + '/' + 'category/tree' + '/' + id;
+        generateTree(url);
+    });//end on click
+        //console.log($(this).text())
+}
+
+function generateTree(url){
+$('#tree-list .overlay').remove();
+treeJSON = d3.json(url, function(error, treeData) {
     //treeData = JSON.parse(treeData.flareTree);
-    treeData = JSON.parse(treeData.programmingLanguagesTree);
-
+    //treeData = JSON.parse(treeData.programmingLanguagesTree);
+    console.log(treeData)
+    treeData = JSON.parse(treeData.tree);
     route = 'category';
     // Calculate total nodes, max label length
     var totalNodes = 0;
@@ -485,8 +502,7 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
     update(root);
 
  });//end d3 getjson
-
-});//end document ready
+}//end generateTree func
 
 
 // $.ajax({

@@ -1,14 +1,18 @@
 class CategoryController < ApplicationController
   require 'json'
+  require 'uri'
+
   skip_before_action :verify_authenticity_token
 
   def index
     @flare                 = Category.find_by(name: "flare")
-    @programming_languages = Category.find_by(name: "Programming Languages")
+    #@programming_languages = Category.find_by(name: "Programming Languages")
     flare_tree = @flare.get_tree_sub_cats
-    programming_languages_tree = @programming_languages.get_tree_sub_cats
+    #programming_languages_tree = @programming_languages.get_tree_sub_cats
     # render json: {flareTreeArray: flare_tree.to_json, programmingLanguagesTreeArray: programming_languages_tree.to_json }
-    render json: {flareTree: flare_tree.to_json, programmingLanguagesTree: programming_languages_tree.to_json }
+    # render json: {flareTree: flare_tree.to_json, programmingLanguagesTree: programming_languages_tree.to_json }
+
+    render json: {tree: flare_tree.to_json }
   end
 
   def create
@@ -39,6 +43,21 @@ class CategoryController < ApplicationController
       render json: {error: "category not found"}
     end
   end #show
+
+  def tree
+    if params[:id]
+      @category = Category.find_by(name: params[:id])
+      if @category
+        @tree = @category.get_tree_sub_cats.to_json
+        #p @tree
+        render json: {tree: @tree}
+      else
+        render json: {error: "category not found"}
+      end
+    else
+      render json: {error: "category name missing from params/data"}
+    end
+  end
 
   def update
     @category = Category.find_by(name: params[:id])
