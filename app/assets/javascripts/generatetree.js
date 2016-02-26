@@ -2,7 +2,7 @@ var route;
 
 $(document).on('ready', function () {
     //generateTree("https://notester.herokuapp.com/category");
-    generateTree("http://localhost:3000/category");
+    generateTree(protocol + '//'+domain +"/"+"category");
     publicTreeSearch();
 });
 
