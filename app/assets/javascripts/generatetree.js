@@ -485,6 +485,7 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
     update(root);
 
  });//end d3 getjson
+
 });//end document ready
 
 

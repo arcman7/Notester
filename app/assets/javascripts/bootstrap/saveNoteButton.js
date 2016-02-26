@@ -1,4 +1,3 @@
-
 function ajaxRes(){
   $('#new_user').on('submit',function(e){
     e.preventDefault();
@@ -159,8 +158,8 @@ $(document).ready(function(){
        bootbox.prompt("Title name:", function(result) {
           var date = new Date();
           var title = result || "note title" + date.toString(),
-              description = document.getElementsByClassName("form-control").val(),
-              username = document.getElementById("user-username").val();
+              description = $(".form-control").val(),
+              username = localStorage.notesterUser;
             $.ajax({
               type: "POST",
               url: protocol +  '//' + domain +'/'+'resource',
