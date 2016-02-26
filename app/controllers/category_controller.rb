@@ -41,11 +41,16 @@ class CategoryController < ApplicationController
   end #show
 
   def update
-    if Category.exists? params[:id]
-      @category = Category.find(params[:id])
-      @category.update(params.require(:category).permit(:description, :name, :parent_category))
+    @category = Category.find_by(name: params[:id])
+    if @category
+      #@category.update(params.require(:category).permit(:description, :name))
+      @parent_category = Category.find_by(name: params[:parent_category])
+      @old_parent = @category.parent_category
+      @old_parent.sub_categories.delete(@category)
+      @parent_category.sub_categories << @category
       render json: {success: "update complete"}
+    else
+      render json: {error: "category not found"}
     end
-    render json: {error: "category not found"}
   end#update
 end

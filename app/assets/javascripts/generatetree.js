@@ -205,12 +205,7 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
         });
 
     function endDrag() {
-        $.ajax({
-            url: protocol + '//' + domain + '/' + route + '/' + d.name,
-            type: "GET"
-        }).done(function (response){
 
-        });//end ajax done
         selectedNode = null;
         d3.selectAll('.ghostCircle').attr('class', 'ghostCircle');
         d3.select(domNode).attr('class', 'node');
@@ -218,8 +213,17 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
         d3.select(domNode).select('.ghostCircle').attr('pointer-events', '');
         updateTempConnector();
         if (draggingNode !== null) {
+            console.log("dragging Node: ",draggingNode);
+            //var description = $('.form-control').val();
+            var parent_category = draggingNode.parent.name;
+            $.ajax({
+                url: protocol + '//' + domain + '/' + route + '/' + draggingNode.name,
+                type: "PATCH",
+                data: {category: {}, parent_category: parent_category}
+            }).done(function (response){
+                console.log(response)
+            });//end ajax done
             update(root);
-            //centerNode(draggingNode);
             draggingNode = null;
         }
     }
@@ -309,7 +313,7 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
             else{
                 $('.form-control').val(response.error)
             }
-            //console.log(response.description);
+            console.log(response);
 
         });//end ajax call done
         if (d3.event.defaultPrevented) return; // click suppressed

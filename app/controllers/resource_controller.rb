@@ -8,6 +8,11 @@ class ResourceController < ApplicationController
   end
 
   def create
+    @resouce = Resource.find_by(title: params[:resource][:title])
+    if @resouce
+      @resource.update(params.require(:resource).permit(:description, :title))
+      render json: {success: "update complete"}
+    end
     @new_resource = Resource.new(params.require(:resource).permit(:title, :description, :file) )
     if params[:username]
       @user = User.find_by(username: params[:username])
@@ -19,7 +24,7 @@ class ResourceController < ApplicationController
     rescue ActiveRecord::RecordInvalid => e
       render json: {error: e.record.errors.details}#, status: 400
     end
-    render nothing: true, status: 204
+    render json: {success: "save complete"}#nothing: true, status: 204
   end
 
   def show
