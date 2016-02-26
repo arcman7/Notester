@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 20160226060501) do
 
   create_table "trees", force: :cascade do |t|
     t.integer  "category_id"
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

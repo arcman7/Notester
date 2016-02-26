@@ -154,8 +154,8 @@ eiffel.sub_categories << csharp
 sather.sub_categories << csharp
 
 programming_languages = Tag.create(name: "programming languages")
-coding = Tag.create(name: "coding")
-computer_language = Tag.create(name: "Computer Language")
+coding                = Tag.create(name: "coding")
+computer_language     = Tag.create(name: "Computer Language")
 
 
 Category.all.each do |category|
@@ -166,6 +166,6 @@ Category.all.each do |category|
   category.tags << computer_language
 end
 
-tree          = Tree.create()
+tree          = Tree.create(name: codeLang.name)
 codeLang.tree = tree
 

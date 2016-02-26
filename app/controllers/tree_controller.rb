@@ -9,8 +9,9 @@ class TreeController < ApplicationController
   def create
     if params[:category]
       @category = Category.find_by(name: params[:category])
+      name = params[:category]
       if @category
-        @tree = Tree.create()
+        @tree = Tree.create(name: name)
         @category.tree = @tree
         render json: {tree: "tree creation success"}
       else
