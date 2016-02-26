@@ -6,6 +6,7 @@ creatorkarma = User.create(username:"creatorkarma", email: "jms@creatorkarma.com
 vrturo       = User.create(username: "vrturo", email: "vrturo@gmail.com");
 
 codeLang = Category.create(name: "Programming Languages")
+
 assembler = Category.create(name: "Assembler")
 
 #rCodeLang = Resource.create(title: "Assembler")
@@ -164,4 +165,7 @@ Category.all.each do |category|
   category.tags << coding
   category.tags << computer_language
 end
+
+tree          = Tree.create()
+tree.category = codeLang
 

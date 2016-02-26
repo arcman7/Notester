@@ -13,8 +13,11 @@
                   <i class="fa fa-level-down pull-right"> </i>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Note 1</a></li>
-                  <li><a href="#">Note 2</a></li>
+                  <% @user.trees.each do |tree| %>
+                  <li class="my-notes" id="<%=(tree.name || tree.title)%>"><a href="#"><%=(tree.name || tree.title)%><a></li>
+                  <% end %>
+                  <!--<li class="my-notes"><a href="#">Note 1</a></li>
+                  <li class="my-notes"><a href="#">Note 2</a></li> -->
                 </ul>
               </li>
               <li class="dropdown-submenu">
@@ -24,19 +27,22 @@
                   <i class="fa fa-level-down pull-right"> </i>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Note 1</a></li>
-                  <li><a href="#">Note 2</a></li>
+                  <% @trees.each do |tree| %>
+                  <li class="public-notes" id="<%=(tree.name || tree.title)%>"><a href="#"><%=(tree.name || tree.title)%><a></li>
+                  <% end %>
+                  <!-- <li class="public-notes"><a href="#">Note 1</a></li>
+                  <li class="public-notes"><a href="#">Note 2</a></li> -->
                 </ul>
               </li>
                <li class="dropdown-submenu">
                 <a tabindex="-1" href="#">
                   <i class="fa fa-tags"></i>
-                  Related Notes
+                    Related Notes <!-- to be done with jQuery -->
                   <i class="fa fa-level-down pull-right"> </i>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Note 1</a></li>
-                  <li><a href="#">Note 2</a></li>
+                  <li class="related-notes"><a href="#">Note 1</a></li>
+                  <li class="related-notes"><a href="#">Note 2</a></li>
                 </ul>
               </li>
             </ul>

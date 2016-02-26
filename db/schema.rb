@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160202001800) do
+ActiveRecord::Schema.define(version: 20160226060501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,14 @@ ActiveRecord::Schema.define(version: 20160202001800) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "trees", force: :cascade do |t|
+    t.integer  "category_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "trees", ["category_id"], name: "index_trees_on_category_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "username"

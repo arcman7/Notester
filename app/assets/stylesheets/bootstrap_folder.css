@@ -1,3 +1,5 @@
 
-/*= require_tree ./bootstrap
-= require_tree ./fonts*/
+/*
+*= require_tree ./fonts
+*= require_tree ./bootstrap
+*/

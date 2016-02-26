@@ -4,6 +4,7 @@ class CreateCategories < ActiveRecord::Migration
      t.string     :name
      t.references :parent_category, index: true
      t.text       :description
+
      t.timestamps
    end
   end
