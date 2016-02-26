@@ -3,11 +3,41 @@
       <!-- .aside -->
       <aside class="aside-xxl b-l b-r" id="tree-list">
           <div style="width: 100%;" class="btn-group">
-          <button style="width: 100%; height: 50px" class="btn btn-green dropdown-toggle" data-toggle="dropdown">My notes <span class="caret"></span></button>
+          <button style="width: 100%; height: 50px" class="btn btn-green dropdown-toggle" data-toggle="dropdown">Notes <span class="caret"></span></button>
             <ul class="dropdown-menu">
-              <li><a href="#">My Notes</a></li>
-              <li><a href="#">Related Notes</a></li>
-              <li><a href="#">Something else here</a></li>
+              <li class="dropdown-submenu">
+                <a tabindex="-1" href="#">
+                  <i class="fa fa-user"></i>
+                  My Notes
+                  <i class="fa fa-level-down pull-right"> </i>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Note 1</a></li>
+                  <li><a href="#">Note 2</a></li>
+                </ul>
+              </li>
+              <li class="dropdown-submenu">
+                <a tabindex="-1" href="#">
+                  <i class="fa fa-users"> </i>
+                  Public Notes
+                  <i class="fa fa-level-down pull-right"> </i>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Note 1</a></li>
+                  <li><a href="#">Note 2</a></li>
+                </ul>
+              </li>
+               <li class="dropdown-submenu">
+                <a tabindex="-1" href="#">
+                  <i class="fa fa-tags"></i>
+                  Related Notes
+                  <i class="fa fa-level-down pull-right"> </i>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Note 1</a></li>
+                  <li><a href="#">Note 2</a></li>
+                </ul>
+              </li>
             </ul>
       </aside>
       <!-- /.aside -->
@@ -76,8 +106,8 @@
                             note title
                           </strong>
                         </div>
-                        <div class="note-desc">
-                          description
+                        <div class="note-subject">
+                          Subject
                         </div>
                         <span class="text-xs text-muted"></span>
                       </div>

@@ -12,7 +12,7 @@ $(function(){
         id   :  Notes.nextId(),
         name :  "New note",
         description :  "",
-        date :  Date.now()
+        user: localStorage.notesterUser
       };
     }
 
@@ -139,7 +139,8 @@ $(function(){
     // Delegated events for creating new items, and clearing completed ones.
     events: {
       "click #new-note"   : "create",
-      "keyup #search-note": "search"
+      "keyup #search-note": "search",
+      "keydown form-control"   : "addOne"
     },
     // At initialization we bind to the relevant events on the
     // collection, when items are added or changed. Kick things off by

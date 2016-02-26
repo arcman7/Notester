@@ -454,8 +454,6 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
 
     // Layout the tree initially and center on the root node.
     update(root);
-
-
 })//end d3 getjson
 
 });//end document ready
