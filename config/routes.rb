@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   resources :user
   resources :session, ony: [:new, :create, :destroy]
+  resources :tree
   post '/logout' => 'session#destroy'
   patch 'category/update_parent/:id' => 'category#update_parent'
   patch 'resource/update_parent/:id' => 'resource#update_parent'

@@ -167,5 +167,5 @@ Category.all.each do |category|
 end
 
 tree          = Tree.create()
-tree.category = codeLang
+codeLang.tree = tree
 

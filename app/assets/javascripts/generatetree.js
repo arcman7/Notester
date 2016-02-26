@@ -489,3 +489,8 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
 });//end document ready
 
 
+// $.ajax({
+//  url: "http://localhost:3000/tree",
+//  type: "POST",
+//  data: {category: "flare"}
+// }).done(function(response){ console.log(response) });

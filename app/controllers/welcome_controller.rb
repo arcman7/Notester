@@ -6,5 +6,6 @@ class WelcomeController < ApplicationController
       @user = User.find(session[:id])
     end
     @trees = Tree.all
+    p @trees.first.category.name
   end
 end
