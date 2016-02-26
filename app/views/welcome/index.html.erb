@@ -23,6 +23,7 @@
                       <%= link_to "Log out", '/logout', onClick: "logOut()", id: 'logOutLink', method: :post %>
                    <% end %>
               </p>
+              <span id="note-title">Note Title</span>
               <span class="pull-right">
                 <% if session[:user_id] == nil %>
                     <p>Hello <strong  style="color: red;" id="user-username"></strong>!</p>

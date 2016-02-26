@@ -23,7 +23,7 @@ treeJSON = d3.json("https://notester.herokuapp.com/category", function(error, tr
 
     // size of the diagram
     var viewerWidth = 397//$(document).width();
-    var viewerHeight = 800 //$(document).height();
+    var viewerHeight = 750 //$(document).height();
 
     var tree = d3.layout.tree()
         .size([viewerHeight, viewerWidth]);

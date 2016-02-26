@@ -29,8 +29,10 @@ function ajaxRes(){
         for(var key in response.errors){
           $('#new_user').append("<h5 style=\"color: red\">"+key+ " " + response.errors[key][0]+"!<\/h5> ");
         }
+      } else {
+        localStorage.notesterUser = response.username;
+        window.location.reload();
       }
-      console.log(response);
     })//end ajax done
   });
 };
@@ -157,12 +159,12 @@ $(document).ready(function(){
        bootbox.prompt("Title name:", function(result) {
           var date = new Date();
           var title = result || "note title" + date.toString(),
-              description = document.getElementsByClassName("form-control"),
-              user_email = document.getElementById("storageUsername");
+              description = document.getElementsByClassName("form-control").val(),
+              username = document.getElementById("user-username").val();
             $.ajax({
               type: "POST",
               url: protocol +  '//' + domain +'/'+'resource',
-              data: new ResourceModel(title,description,user_email)
+              data: {resource: {title: title, description: description}, user: username }
             })
           })
         });//end event listener
