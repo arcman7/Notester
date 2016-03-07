@@ -5,7 +5,7 @@ function ajaxRes(){
       url: protocol +  '//' + domain +'/'+'user',
       type: "POST",
       data: $(this).serialize()//{ user: {username: , email: , password: } }
-    }).done(function(response){
+    }).done(function (response){
       if(response.errors){
         for(var key in response.errors){
           $('#new_user').append("<h5 style=\"color: red\">"+key+ " " + response.errors[key][0]+"!<\/h5> ");
@@ -17,13 +17,15 @@ function ajaxRes(){
       }
     })//end ajax done
   });
-  $('#new_session').on('submit',function(e){
+  $('#new_session').on('submit',function (e){
     e.preventDefault();
     $.ajax({
-      url: protocol +  '//' + domain +'/'+'user',
+      url: protocol +  '//' + domain +'/'+'session',
       type: "POST",
       data: $(this).serialize()//{ user: {username: , email: , password: } }
-    }).done(function(response){
+    }).done(function (response){
+      console.log(response);
+
       if(response.errors){
         for(var key in response.errors){
           $('#new_user').append("<h5 style=\"color: red\">"+key+ " " + response.errors[key][0]+"!<\/h5> ");
