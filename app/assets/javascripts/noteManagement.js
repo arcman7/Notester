@@ -8,6 +8,8 @@ function setKeys(){
 setKeys();                       //controller
 var storageIndex = 0;            //controller
 
+var route = "resource";
+
 function id(){ return storageKeys[storageIndex] };
 function htmlTemplate(idd){ //view
   var idd =  ( idd || id() );
@@ -17,7 +19,7 @@ function htmlTemplate(idd){ //view
   strVar += "                        <button class=\"destroy close hover-action\">×<\/button>";
   strVar += "                        <div class=\"note-name\">";
   strVar += "                          <strong>";
-  strVar += "                            note title";
+  strVar += "                            Note Title";
   strVar += "                          <\/strong>";
   strVar += "                        <\/div>";
   strVar += "                        <div class=\"note-subject\">";
@@ -147,17 +149,79 @@ function reIndexModels(){ //model management/maintanence
  }//end for
 }
 
-function editNote(container){
+function editNoteListener(container){
+  container.on('dblclick', '.list-group-item', function (e){
+     var noteTitle   = $(this).children().children('.note-name').text().trim();
+     var noteSubject = $(this).children().children('.note-subject').text().trim();
+     var note        = $(this);
+    //  console.log(noteTitle,noteSubject);
+    // $(this).html('<input type="text" placeholder="'+noteTitle+'"><br>'+'<input type="text" placeholder="'+noteSubject+'">')//.focus();
+    // $(this).html().focus();
+    var idd = sessionStorage.notesterIdFocus;
 
+    bootbox.dialog({
+      title  : 'Edit Note',
+      message: '<input class="bootbox-input bootbox-input-text form-control" id="editNoteTitle" type="text" placeholder="'+noteTitle+'"><br><input class="bootbox-input bootbox-input-text form-control" id="editNoteSubject" type="text" placeholder="'+noteSubject+'">',
+      buttons: {
+        save: {
+            label: 'Save',
+            callback: function(){
+              var editNoteSubject = $('#editNoteSubject').val();
+              var editNoteTitle   = $('#editNoteTitle').val();
+              var strVar = "";
+              strVar += "                      <div class=\"view\">";
+              strVar += "                        <button class=\"destroy close hover-action\">×<\/button>";
+              strVar += "                        <div class=\"note-name\">";
+              strVar += "                          <strong>";
+              strVar += "                         "+editNoteTitle;
+              strVar += "                          <\/strong>";
+              strVar += "                        <\/div>";
+              strVar += "                        <div class=\"note-subject\">";
+              strVar += "                         "+editNoteSubject;
+              strVar += "                        <\/div>";
+              strVar += "                        <span class=\"text-xs text-muted\"><\/span>";
+              strVar += "                      <\/div>";
+              strVar += "                      <div hidden class='storageIndex'>"+idd+"</div>";
+              note.html(strVar);
+              if(localStorage["notes-app-"+idd]){               //model
+                var noteObject = JSON.parse(localStorage["notes-app-"+idd]); //model
+                noteObject.title   = editNoteTitle;
+                noteObject.subject = editNoteSubject;
+                localStorage["notes-app-"+idd] = JSON.stringify(noteObject); //model
+                $('#note-title').text(noteObject.title);          //view
+                $('#note-text-area').val(noteObject.description); //view
+                $.ajax({
+                  url: protocol + '//' + domain + '/' + route + '/' + editNoteTitle,
+                  type: "PATCH",
+                  data: { resource: { title: editNoteTitle, description: noteObject.description, subject: editNoteSubject } }
+                }).done(function (response){
+                  if(response.success){
+                    $('.bb-alert').delay(200).fadeIn().delay(4000).fadeOut(); //dom-view
+                  }
+                  else{
+                    $('.bb-alert-fail').delay(200).fadeIn().delay(4000).fadeOut(); //dom-view
+                  }
+                })
+              }
+            }
+        }
+      }
+    })
+    //"Title name:", function (result) {
+     //});//end bootbox
+
+  });//end on dblcick
 }
 
 $(document).on('ready',function(){
   reIndexModels()
   createNoteListener();
   updateNoteContentListener();
+  var noteContainer = $('#note-items');
+  editNoteListener(noteContainer);    //controller-view
   sessionStorage.loggedInStatus = ( $('#user-username').attr('style').split(':')[1] !== " red;" ) //controller
 });//end document ready
-3
+
 
 //Procedure
 //{"id":1,"name":"my note title","description":"blablabala ","user":"Anon"}
