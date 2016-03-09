@@ -3226,6 +3226,33 @@ fieldset[disabled] .btn-gplus.active {
     font-size: 30px;
     margin-left: 10%;
   }
+
+.bb-alert {
+  display:none;
+  text-align: center;
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+  background-color: #65bd77;
+  margin-bottom: 10px;
+  margin-top: 5px;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.bb-alert-fail {
+  display:none;
+  text-align: center;
+  font-size: 18px;
+  color:white;
+  font-weight: bold;
+  background-color: #E44444;
+  margin-bottom: 10px;
+  margin-top: 5px;
+  border-radius: 15px;
+  padding: 15px;
+}
+
 @media screen and (min-width: 992px) {
   .col-lg-2-4 {
     width: 20.000%;
@@ -3265,5 +3292,6 @@ fieldset[disabled] .btn-gplus.active {
   .wrapper-lg {
     padding: 15px;
   }
+
 }
 
