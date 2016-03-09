@@ -7,9 +7,6 @@ class SessionController < ApplicationController
   def create
     @user = User.find_by(email: params[:user][:email])
     if @user
-      p '*'*90
-      p @user
-      p @user.authenticate(params[:user][:password])
       if @user && @user.authenticate(params[:user][:password])
         set_current_user(@user)
         #redirect_to root_path

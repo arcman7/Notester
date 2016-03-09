@@ -67,11 +67,10 @@ function addNote(id){             //view
     storageIndex = noteContainer.append(htmlTemplate(id));
     return;
   }
-  destroyNoteListener(noteContainer); //controller-view
-  noteContainer.append(htmlTemplate());  //view
-  //console.log("addNote-htmlTemplate() called")
-  bindFocus(noteContainer);                           //controller
+                //controller
   var note = new Note(localStorage.notesterUser, "blank","blank","blank");
+  noteContainer.append(htmlTemplate());  //view
+
   //console.log(JSON.stringify(note))
   $('#note-text-area').val(note.description);
   localStorage["notes-app-"+storageKeys[storageIndex]] = JSON.stringify(note); //controller?
@@ -86,9 +85,9 @@ function bindFocus(container){//clicking inside a the tab sets localStorage.note
     var storageId = $(this).children('.storageIndex').text();   //controller
     //localStorage.notesterIdFocus = storageId;                     //controller
     console.log("storageId: ",storageId);
-    sessionStorage.notesterIdFocus = storageId;
-    $('.active').removeClass('active');
-    $(this).addClass('active');
+    sessionStorage.notesterIdFocus = storageId;  //model
+    $('.active').removeClass('active');          //view
+    $(this).addClass('active');                  //view
     if(localStorage["notes-app-"+storageId]){               //controller
       var noteObject = JSON.parse(localStorage["notes-app-"+storageId]);
       $('#note-title').text(noteObject.title);          //view
@@ -138,15 +137,19 @@ function reIndexModels(){ //model management/maintanence
  var counter = 0;
  var newKey;
  for(key in localStorage){
-  //1. take key and make new key
-  if(key.includes('note-app-')){
-    newKey = storageKeys[counter];
-    localStorage["note-app-" + newKey] = localStorage[key];
-    addNote(id);
-    delete localStorage[key];
-    counter++;
-  }
+    //1. take key and make new key
+    if(key.includes('notes-app-')){
+      newKey   = storageKeys[counter]; //model
+      newValueCopy = localStorage[key]; //if the set of noteobjects and keys have no holes, then newKey and key are equivalent// also, model
+      delete localStorage[key];
+      localStorage["notes-app-" + newKey] = newValueCopy;
+      addNote(newKey);
+      console.log("key: ", newKey);
+      counter++;
+    }
  }//end for
+$('.active').removeClass('active'); //view
+
 }
 
 function editNoteListener(container){
@@ -213,13 +216,20 @@ function editNoteListener(container){
   });//end on dblcick
 }
 
-$(document).on('ready',function(){
-  reIndexModels()
-  createNoteListener();
-  updateNoteContentListener();
+function noteBehaviorController(){
   var noteContainer = $('#note-items');
-  editNoteListener(noteContainer);    //controller-view
   sessionStorage.loggedInStatus = ( $('#user-username').attr('style').split(':')[1] !== " red;" ) //controller
+  reIndexModels(); //model management
+  destroyNoteListener(noteContainer); //controller-view
+  bindFocus(noteContainer);    //controller-view behavior
+  createNoteListener();        //controller-view behavior
+  updateNoteContentListener(); //controller-view-model behavior
+  editNoteListener(noteContainer);    //controller-view
+}
+
+
+$(document).on('ready',function(){
+  noteBehaviorController();
 });//end document ready
 
 

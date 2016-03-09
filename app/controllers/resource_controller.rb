@@ -7,7 +7,7 @@ class ResourceController < ApplicationController
     render json: {resources: @resources}
   end
 
-  def create
+  def create #handles creation and updates
     @resouce = Resource.find_by(title: params[:resource][:title])
     if @resouce
       @resource.update(params.require(:resource).permit(:description, :title))
@@ -40,7 +40,7 @@ class ResourceController < ApplicationController
   def show
     @resource = Resource.find_by(title: params[:id]) #better to use resource names rather than id for now
      if @resource
-        render json: { description: @resource.description, children: @resource.children}
+        render json: { description: @resource.description, children: @resource.children, id: @resource.id}
      else
         render json: {error: "resource not found"}
      end
