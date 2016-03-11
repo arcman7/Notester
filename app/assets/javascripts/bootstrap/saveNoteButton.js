@@ -2,7 +2,7 @@ function ajaxRes(){
   $('#new_user').on('submit',function(e){
     e.preventDefault();
     $.ajax({
-      url: protocol +  '//' + domain +'/'+'user',
+      url: PROTOCOL +  '//' + DOMAIN +'/'+'user',
       type: "POST",
       data: $(this).serialize()//{ user: {username: , email: , password: } }
     }).done(function (response){
@@ -20,7 +20,7 @@ function ajaxRes(){
   $('#new_session').on('submit',function (e){
     e.preventDefault();
     $.ajax({
-      url: protocol +  '//' + domain +'/'+'session',
+      url: PROTOCOL +  '//' + DOMAIN +'/'+'session',
       type: "POST",
       data: $(this).serialize()//{ user: {username: , email: , password: } }
     }).done(function (response){
@@ -155,19 +155,40 @@ $(document).ready(function(){
 
 
   var signUp = function(){
+    //this function gives detail(title) to a new noteObject, which at this state only has an Id + content
     // if (localStorage.notesterUser !== 'Anon' && localStorage.notesterUser !== undefined){ //means we're logged in
     if ($("#user-username").css("color") !== "rgb(255, 0, 0)"){
       saveNoteButton.addEventListener('click', function(){
-       bootbox.prompt("Title name:", function(result) {
+       bootbox.prompt("Title name:", function (result) {
           var date = new Date();
-          var title = result || "note title" + date.toString(),
-              description = $(".form-control").val(),
-              username = localStorage.notesterUser;
-            $.ajax({
-              type: "POST",
-              url: protocol +  '//' + domain +'/'+'resource',
-              data: {resource: {title: title, description: description}, user: username }
-            })
+          var title = result || "note title" + date.toString();
+          description = $(".form-control").val();
+          var username = localStorage.notesterUser;
+          var storageId = sessionStorage.notesterIdFocus;
+          var noteObject = JSON.parse(localStorage['notes-app-'+storageId]);
+          noteObject.title = title;
+          data = {resource: {title: title, description: description}, username: username };
+          var request = $.ajax( setAjaxCall(noteObject, data));
+            // $.ajax({
+            //   type: "POST",
+            //   url: PROTOCOL +  '//' + DOMAIN +'/'+'resource',
+            //   data: {resource: {title: title, description: description}, username: username }
+            // })
+            request.done(
+            function (response){
+              console.log("response: ", response);
+              if(response.id){
+                // var storageId = sessionStorage.notesterIdFocus;
+                // var noteObject = JSON.parse(localStorage['notes-app-'+storageId]);
+                noteObject.id = response.id;
+                localStorage['notes-app-'+storageId] = JSON.stringify(noteObject);
+                console.log("success: ",response);
+                $('.bb-alert').delay(200).fadeIn().delay(4000).fadeOut(); //dom-view
+              }
+              else{
+                alert(JSON.stringify(response));
+              }
+            });
           })
         });//end event listener
     }

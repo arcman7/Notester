@@ -35,7 +35,7 @@ class Resource < ActiveRecord::Base
     end
   end
   def get_tree_resources
-    @@results = { name: self.title, parent: nil, self.id }
+    @@results = { name: self.title, parent: nil, id: self.id }
     recurse_children(self,@@results)
     @@results
   end

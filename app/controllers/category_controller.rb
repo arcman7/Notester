@@ -70,15 +70,17 @@ class CategoryController < ApplicationController
   end#update
 
   def update_parent
-    @category = Category.find_by(name: params[:id])
-    @parent   = Category.find_by(name: params[:parent])
+    @category = Category.find(params[:id])
+    #@parent   = Category.find_by(name: params[:parent])
+    @parent   = Category.find( params[:parent] )
+
     if @category && @parent
       @old_parent = @category.parent_category
       @old_parent.sub_categories.delete(@category)
       @parent.sub_categories << @category
+      render json: {update: "successful"}#, :status => 200
     else
       render json: {error: "update was not successful"}
     end
-    render json: {update: "successful"}#, :status => 200
   end
 end

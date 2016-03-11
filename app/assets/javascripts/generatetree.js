@@ -2,7 +2,7 @@ var route;
 
 $(document).on('ready', function () {
     //generateTree("https://notester.herokuapp.com/category");
-    generateTree(protocol + '//'+domain +"/"+"category");
+    generateTree(PROTOCOL + '//'+ DOMAIN +"/"+"category");
     publicTreeSearch();
 });
 
@@ -10,7 +10,7 @@ function publicTreeSearch(){
     $('.public-notes').click(function()
     {
         var id = $(this).text();
-        var url = protocol + '//' + domain + '/' + 'category/tree' + '/' + id;
+        var url = PROTOCOL + '//' + DOMAIN + '/' + 'category/tree' + '/' + id;
         generateTree(url);
     });//end on click
         //console.log($(this).text())
@@ -232,9 +232,12 @@ treeJSON = d3.json(url, function(error, treeData) {
         if (draggingNode !== null) {
             console.log("dragging Node: ",draggingNode);
             //var description = $('.form-control').val();
-            var parent = draggingNode.parent.name;
+            //var parent = draggingNode.parent.name;
+            var parent = draggingNode.parent.id;
+
             $.ajax({
-                url: protocol + '//' + domain + '/' + route + '/update_parent' + '/' + draggingNode.name,
+                ///url: PROTOCOL + '//' + DOMAIN + '/' + route + '/update_parent' + '/' + draggingNode.name,
+                url: PROTOCOL + '//' + DOMAIN + '/' + route + '/update_parent' + '/' + draggingNode.id,
                 type: "PATCH",
                 data: { parent: parent}
             }).done(function (response){
@@ -321,18 +324,19 @@ treeJSON = d3.json(url, function(error, treeData) {
     function click(d) {
         //console.log(d.name);
         $('#note-title').text(d.name); //Set the note title at the top of the page
+        sessionStorage.notesterIdFocus = d.name+d.id; //sets the note-Focus on the on the node (name+id = unique combo) //MODEL
+        sessionStorage.notesterNodeParent = d.parent.name; //sets the subject for addNote()
         $.ajax({
-            url: protocol + '//' + domain + '/' + route + '/' + d.name,
+            url: PROTOCOL + '//' + DOMAIN + '/' + route + '/' + d.name,
             type: "GET"
         }).done(function (response){
             if(response.description){
-                $('.form-control').val(response.description);
+                $('.form-control').val(response.description); //view
             }
             else{
-                $('.form-control').val(response.error)
+                $('.form-control').val(response.error) //view-error
             }
             console.log(response);
-
         });//end ajax call done
         if (d3.event.defaultPrevented) return; // click suppressed
         d = toggleChildren(d);
