@@ -3,7 +3,7 @@
       <!-- .aside -->
       <aside class="aside-xxl b-l b-r" id="tree-list">
           <div style="width: 100%;" class="btn-group">
-          <button style="width: 100%; height: 50px" class="btn btn-green dropdown-toggle" data-toggle="dropdown">Notes <span class="caret"></span></button>
+          <button style="width: 100%; height: 50px" id="dropTree" class="btn btn-green dropdown-toggle" data-toggle="dropdown">Notes <span class="caret"></span></button>
             <ul class="dropdown-menu">
 
               <li class="dropdown-submenu">
@@ -55,12 +55,12 @@
        <!-- <script type="text/template" id="note-template"> -->
           <section class="vbox">
             <header class="header bg-light lter bg-gradient b-b">
+                   <% if session[:user_id] %>
+                      <i data-toggle="tooltip" data-placement="left" title="Log Out" class="fa fa-sign-out fa-2x"><%= link_to " ", '/logout', onClick: "logOut()", id: 'logOutLink', method: :post %></i>
+                   <% end %>
               <p id="social-buttons">
                   <a style="color: steelblue" href="#" class="btn-rounded btn-sm btn-icon"><i class="fa fa-circle"></i></a>
                   <a style="color: #65bd77" href="#" class="btn-rounded btn-sm btn-icon"><i class="fa fa-circle"></i></a>
-                   <% if session[:user_id] %>
-                      <%= link_to "Log out", '/logout', onClick: "logOut()", id: 'logOutLink', method: :post %>
-                   <% end %>
               </p>
               <a href="#" id="note-title">Note Title</a>
               <span class="pull-right">
