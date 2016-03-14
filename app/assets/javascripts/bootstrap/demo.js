@@ -47,12 +47,11 @@
           intro: '<p class="h4 text-uc"><strong>7: Note Tree DropDown</strong></p><p>Click on button to shift between your notes, public notes, related notes, or to create a new tree!</p>',
           position: 'right'
         }
-      ],
-      showBullets: true,
+      ]
     });
 
     checkLocalStorage(intro);
-
+    // intro.start();
   });
 }(jQuery);
 
