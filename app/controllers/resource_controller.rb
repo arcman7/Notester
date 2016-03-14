@@ -19,8 +19,11 @@ class ResourceController < ApplicationController
       @user = User.find_by(username: params[:username])
     end
 
-    if params[:parent]
-      @parent = Resource.find_by(title: params[:parent])
+    if params[:parent] && @user
+      @parent = @user.resources.find_by(title: params[:parent])
+      if !@parent
+        @parent = Resource.create(title: params[:parent]) ####################### left off here3
+      end
     end
     if @user
         begin
@@ -30,12 +33,11 @@ class ResourceController < ApplicationController
           end
           if @parent
             @parent.children << @new_resource
-
           end
-          p '@'*90
-          render json: {success: "save complete", id: @new_resource.id}#nothing: true, status: 204
+          #p '@'*90
+          render json: {success: "save complete", id: @new_resource.id, parent_id: @parent.id}#nothing: true, status: 204
         rescue ActiveRecord::RecordInvalid => e
-           p 'E'*90
+           #p 'E'*90
           render json: {error: e.record.errors.details}#, status: 400
         end
     else
@@ -54,28 +56,68 @@ class ResourceController < ApplicationController
   end#show
 
   def get_user_tree
-    begin
-      @user = User.find_by(username: params[:username])
-      if(params[:resource]) #:resource => should be the resource name
-        @tree = @user.trees.find_by(title: params[:resource])
-      else
-        @tree = @user.trees.order("created_at").first
+      begin
+          @user = User.find_by(username: params[:username])
+          if(params[:resource]) #:resource => should be the resource name
+              @tree = @user.trees.find_by(title: params[:resource])
+          else
+              @tree = @user.trees.order("created_at").first
+          end
+      rescue
+          render json: {error: "the user resource could not be found"}
       end
-    rescue
-      render json: {error: "the user resource could not be found"}
-    end
 
-    render json: {tree: @tree.get_tree_resources}
+      render json: {tree: @tree.get_tree_resources}
   end
 
   def update
-    #@resource = Resource.find_by(name: params[:id])
-    @resource = Resource.find( params[:id] )
-    if @resource
-      @resource.update(params.require(:resource).permit(:description, :title, :parent))
-      render json: {success: "update complete"}
+    #the update route/method takes two paremeters; resource.id and new-parent.id
+    # it attempts to find the old parent on the provided resource if there is one
+    # deletes the the child-parent relationships
+    # attempts to find the new-parent... how?? parent id's only exist as the previously saved parent.id
+
+    #new convention will be defined here...
+    # updates will come with the parent defined by name, and looked up as a resource of the subset belonging to the user
+    logged_in = false
+
+    if params[:username]
+        @user = User.find(session[:user_id])
+        if @user.username == params[:username]
+            logged_in = true
+        end
+    end
+
+    if logged_in
+        if params[:id]
+            @resource = Resource.find( params[:id] )
+        end
+        if @resource
+            #update parents children to remove child
+            @old_parent = @resource.parent
+
+            if @old_parent
+                if old_parent.title != params[:parent_title]
+                    @old_parent.children.delete(@resource)
+                end
+            end
+
+            @resource.update(params.require(:resource).permit(:description, :title))
+
+            if params[:parent_title]
+                @parent = @user.resources.find_by( title: params[:parent_title] )
+            end
+            if @parent
+                @parent.children << @resource
+                render json: {success: "update complete", id: @resource.id, parent_id: @parent.id }
+                #Do you even lyft
+            else
+                render json: {error: "parent-resource not found",  code: 3}
+            end
+        else
+            render json: {error: "resource not found", code: 2}
+        end
     else
-      render json: {error: "resource not found"}
+        render json: {error: "user not logged in or not found", code: 1}
     end
   end#update
 

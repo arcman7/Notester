@@ -31,7 +31,7 @@ class CategoryController < ApplicationController
       render json: {error: e.record.errors.details}, status: 400
     end
 
-    render json: {id: "#{@new_category.id}"}#, status: 204
+    render json: {success: "create and save complete", id: @new_category.id}#, status: 204
   end
 
   def show

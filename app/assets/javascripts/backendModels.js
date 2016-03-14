@@ -14,7 +14,7 @@ window.resource.contructor = ResourceModel;
 var locationArray = window.location.href.split('/');
 var PROTOCOL      = locationArray[0];
 var DOMAIN        = locationArray[2];
-var ROUTE;
+var ROUTE,FOCUS;
 
 //data: new ResourceModel("jimmy","note contents","bean")
 
@@ -32,6 +32,9 @@ function setAjaxCall(noteObject,data){
     if(noteObject.id){ //update code
        url  = PROTOCOL + '//' + DOMAIN + '/' + ROUTE + '/' + noteObject.id;
        type = "PATCH";
+       data.parent_id    = noteObject.parent_id;
+       data.parent_title = noteObject.subject;
+       data.username     = localStorage.username;
     }
     else{
        url  = PROTOCOL + '//' + DOMAIN + '/' + ROUTE;

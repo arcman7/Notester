@@ -26,7 +26,7 @@ class Resource < ActiveRecord::Base
     return if parent.children.length == 0
     #p self.name
     current_node["children"] =  []
-    parent.children.each{|child| current_node["children"].push({name: child.title, parent: child.parent.title, id: self.id }) }
+    parent.children.each{|child| current_node["children"].push({name: child.title, parent: child.parent.title, id: self.id, parent_id: child.parent.id }) }
     p current_node
     parent.children.each do |child|
       index     = current_node["children"].index{|node| node[:name] == child.title}
@@ -35,7 +35,7 @@ class Resource < ActiveRecord::Base
     end
   end
   def get_tree_resources
-    @@results = { name: self.title, parent: nil, id: self.id }
+    @@results = { name: self.title, parent: nil, id: self.id, parent_id: nil }
     recurse_children(self,@@results)
     @@results
   end

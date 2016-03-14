@@ -115,7 +115,7 @@ function appendSignUp(){
 
 $(document).ready(function(){
 
-  document.getElementById("note-date").outerHTML = Date();
+  document.getElementById("note-date").outerHTML = '<p id="note-date">'+Date() + '</p>';
 
 
 
@@ -161,19 +161,15 @@ $(document).ready(function(){
       saveNoteButton.addEventListener('click', function(){
        bootbox.prompt("Title name:", function (result) {
           var date = new Date();
-          var title = result || "note title" + date.toString();
-          description = $(".form-control").val();
-          var username = localStorage.notesterUser;
-          var storageId = sessionStorage.notesterIdFocus;
-          var noteObject = JSON.parse(localStorage['notes-app-'+storageId]);
-          noteObject.title = title;
+          var title = result || "Note Title"// + date.toString();
+          description = $(".form-control").val();         //controller param for backend saving
+          var username = localStorage.notesterUser;       //controller param for backend saving
+          var storageId = sessionStorage.notesterIdFocus; //controller
+          var noteObject = JSON.parse(localStorage['notes-app-'+storageId]); //model
+          noteObject.title = title;                                          //model
+          setNoteDom(noteObject,FOCUS);                   //view-model sync
           data = {resource: {title: title, description: description}, username: username };
           var request = $.ajax( setAjaxCall(noteObject, data));
-            // $.ajax({
-            //   type: "POST",
-            //   url: PROTOCOL +  '//' + DOMAIN +'/'+'resource',
-            //   data: {resource: {title: title, description: description}, username: username }
-            // })
             request.done(
             function (response){
               console.log("response: ", response);
@@ -181,12 +177,13 @@ $(document).ready(function(){
                 // var storageId = sessionStorage.notesterIdFocus;
                 // var noteObject = JSON.parse(localStorage['notes-app-'+storageId]);
                 noteObject.id = response.id;
+                noteObject.parent_id = response.parent_id;
                 localStorage['notes-app-'+storageId] = JSON.stringify(noteObject);
                 console.log("success: ",response);
                 $('.bb-alert').delay(200).fadeIn().delay(4000).fadeOut(); //dom-view
               }
               else{
-                alert(JSON.stringify(response));
+                //alert(JSON.stringify(response));
               }
             });
           })
