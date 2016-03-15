@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   patch 'category/update_parent/:id' => 'category#update_parent'
   patch 'resource/update_parent/:id' => 'resource#update_parent'
   get   'category/tree/:id' => 'category#tree'
+  get   'resource/show_by_name/:id' => 'resource#show_by_name'
+  get   'category/show_by_name/:id' => 'category#show_by_name'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

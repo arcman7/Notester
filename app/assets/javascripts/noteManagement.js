@@ -50,7 +50,38 @@ function htmlTemplate(idd,title,subject,update){ //view
 //  //
 //  var stuff = $(this).children().children('div.note-subject').text()
 //  console.log(stuff);
-// })
+// })\
+function searchResource(term){
+  var url = PROTOCOL + '//' + DOMAIN + '/' + 'resource' + '/show_by_name/'+term;
+  $.ajax({
+  url: url,
+  type: "GET"
+  })
+  .done( function (response) {
+    console.log( response);
+  });//end done
+}
+function searchCategory(term){
+  var url = PROTOCOL + '//' + DOMAIN + '/' + 'category' + '/show_by_name/'+term;
+  $.ajax({
+    url: url,
+    type: "GET"
+  })
+  .done( function (response) {
+    console.log( response)
+  });//end done
+}
+function searchListener(){
+  var container = $('.input-group')
+  container.on('click', ".input-sm", function (e){
+    var searchTerm = $('#search-note').val();
+    console.log("hiiii");
+    searchResource(searchTerm);
+    searchCategory(searchTerm);
+  });
+
+}
+
 
 function setNoteDom(noteObject,liDomNote){  //controller: model-view sync
     //set title at top of page
@@ -285,6 +316,7 @@ function noteBehaviorController(){
   createNoteListener();        //controller-view behavior
   updateNoteContentListener(); //controller-view-model behavior
   editNoteListener(noteContainer);    //controller-view
+  searchListener();             //controller-backend-view
 }
 
 

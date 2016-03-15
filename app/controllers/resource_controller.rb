@@ -158,5 +158,5 @@ class ResourceController < ApplicationController
      else
         render json: {error: "resource not found"}
      end
-  end
+  end#show_by_name
 end

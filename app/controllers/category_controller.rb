@@ -83,4 +83,13 @@ class CategoryController < ApplicationController
       render json: {error: "update was not successful"}
     end
   end
+
+  def show_by_name
+     @category = Category.find_by(name: params[:id]) #better to use resource names rather than id for now
+     if @category
+        render json: { description: @category.description, children: @category.sub_categories, id: @category.id, parent: @category.parent_category }
+     else
+        render json: {error: "resource not found"}
+     end
+  end#show_by_name
 end
