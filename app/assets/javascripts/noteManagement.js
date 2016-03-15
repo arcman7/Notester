@@ -81,7 +81,6 @@ function MetaModelConstructor(){  //controller-model ??
         behavior.push(arguments[i]);
       }
    }
-  //console.log(properties)
   var ModelConstructor = function(){
     for(var i =0; i< properties.length; i++){
        this[properties[i]] = arguments[i]; //set up property assignment arguments
@@ -174,7 +173,7 @@ function updateNoteContentListener(){
       }
     }
      var storageId = sessionStorage.notesterIdFocus;
-     console.log("storageId: ",storageId)
+     console.log("storageId: ",storageId);
      var noteObject = JSON.parse(localStorage["notes-app-"+storageId]);
      //console.log(noteObject);
      noteObject.description = $('#note-text-area').val();

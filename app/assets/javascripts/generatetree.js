@@ -327,7 +327,8 @@ treeJSON = d3.json(url, function(error, treeData) {
         sessionStorage.notesterIdFocus = d.name+d.id; //sets the note-Focus on the on the node (name+id = unique combo) //MODEL
         sessionStorage.notesterNodeParent = d.parent.name; //sets the subject for addNote()
         $.ajax({
-            url: PROTOCOL + '//' + DOMAIN + '/' + route + '/' + d.name,
+            //url: PROTOCOL + '//' + DOMAIN + '/' + route + '/' + d.name,
+            url: PROTOCOL + '//' + DOMAIN + '/' + route + '/' + d.id,
             type: "GET"
         }).done(function (response){
             if(response.description){

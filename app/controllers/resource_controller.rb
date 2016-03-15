@@ -35,7 +35,12 @@ class ResourceController < ApplicationController
             @parent.children << @new_resource
           end
           #p '@'*90
-          render json: {success: "save complete", id: @new_resource.id, parent_id: @parent.id}#nothing: true, status: 204
+          #p @new_resource,@parent
+          if @parent
+            render json: {success: "save complete", id: @new_resource.id, parent_id: @parent.id}#nothing: true, status: 204
+          else
+            render json: {success: "save complete", id: @new_resource.id}
+          end
         rescue ActiveRecord::RecordInvalid => e
            #p 'E'*90
           render json: {error: e.record.errors.details}#, status: 400
@@ -47,9 +52,9 @@ class ResourceController < ApplicationController
 
   def show
     #@resource = Resource.find_by(title: params[:id]) #better to use resource names rather than id for now
-    @resource = Reousrce.find( params[:id] )
+    @resource = Resource.find( params[:id] )
      if @resource
-        render json: { description: @resource.description, children: @resource.children, id: @resource.id}
+        render json: { description: @resource.description, children: @resource.children, id: @resource.id, parent: @resource.parents.first }
      else
         render json: {error: "resource not found"}
      end
@@ -93,10 +98,10 @@ class ResourceController < ApplicationController
         end
         if @resource
             #update parents children to remove child
-            @old_parent = @resource.parent
+            @old_parent = @resource.parents.first
 
             if @old_parent
-                if old_parent.title != params[:parent_title]
+                if @old_parent.title != params[:parent_title]
                     @old_parent.children.delete(@resource)
                 end
             end
@@ -110,13 +115,23 @@ class ResourceController < ApplicationController
                 @parent.children << @resource
                 render json: {success: "update complete", id: @resource.id, parent_id: @parent.id }
                 #Do you even lyft
-            else
-                render json: {error: "parent-resource not found",  code: 3}
+
+            else#creating parent if it doenst exist yet
+                @parent = @user.resources.create(title: params[:parent_title])
+                if @parent
+                  @parent.children << @resource
+                  render json: {success: "update complete", id: @resource.id, parent_id: @parent.id }
+                else
+                  render json: {error: "failed to create parent subject"}
+                end
+                #render json: {error: "parent-resource not found",  code: 3}
             end
         else
             render json: {error: "resource not found", code: 2}
         end
     else
+        #p session[:user_id]
+        #p User.find(session[:user_id])
         render json: {error: "user not logged in or not found", code: 1}
     end
   end#update
@@ -134,5 +149,14 @@ class ResourceController < ApplicationController
     else
       render json: {error: "update was not successful"}
     end
+  end
+
+  def show_by_name
+     @resource = Resource.find_by(title: params[:id]) #better to use resource names rather than id for now
+     if @resource
+        render json: { description: @resource.description, children: @resource.children, id: @resource.id, parent: @resource.parents.first }
+     else
+        render json: {error: "resource not found"}
+     end
   end
 end

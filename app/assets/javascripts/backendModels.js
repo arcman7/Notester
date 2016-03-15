@@ -20,10 +20,14 @@ var ROUTE,FOCUS;
 
 function setAjaxCall(noteObject,data){
     data = (data || {});
+    data.username = localStorage.notesterUser;
+
     var url,type;
     //wich rails controller are we hitting? //controller-parameters
     if(noteObject.route){
         ROUTE = noteObject.route;
+        data.category = { name: data.resource.title, description: data.resource.description}
+        delete data["resource"];
     }
     else{
       ROUTE = "resource";
@@ -34,7 +38,6 @@ function setAjaxCall(noteObject,data){
        type = "PATCH";
        data.parent_id    = noteObject.parent_id;
        data.parent_title = noteObject.subject;
-       data.username     = localStorage.username;
     }
     else{
        url  = PROTOCOL + '//' + DOMAIN + '/' + ROUTE;

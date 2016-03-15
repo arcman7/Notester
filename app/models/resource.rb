@@ -26,7 +26,7 @@ class Resource < ActiveRecord::Base
     return if parent.children.length == 0
     #p self.name
     current_node["children"] =  []
-    parent.children.each{|child| current_node["children"].push({name: child.title, parent: child.parent.title, id: self.id, parent_id: child.parent.id }) }
+    parent.children.each{|child| current_node["children"].push({name: child.title, parent: child.parents.first.title, id: self.id, parent_id: child.parents.first.id }) }
     p current_node
     parent.children.each do |child|
       index     = current_node["children"].index{|node| node[:name] == child.title}

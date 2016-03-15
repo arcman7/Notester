@@ -5,13 +5,12 @@ class CategoryController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    @flare                 = Category.find_by(name: "flare")
+    @flare = Category.find_by(name: "flare")
     #@programming_languages = Category.find_by(name: "Programming Languages")
     flare_tree = @flare.get_tree_sub_cats
     #programming_languages_tree = @programming_languages.get_tree_sub_cats
     # render json: {flareTreeArray: flare_tree.to_json, programmingLanguagesTreeArray: programming_languages_tree.to_json }
     # render json: {flareTree: flare_tree.to_json, programmingLanguagesTree: programming_languages_tree.to_json }
-
     render json: {tree: flare_tree.to_json }
   end
 
@@ -35,7 +34,8 @@ class CategoryController < ApplicationController
   end
 
   def show
-    @category = Category.find_by(name: params[:id])
+    #@category = Category.find_by(name: params[:id])
+    @category = Category.find( params[:id] )
 
     if @category
       render json: { description: @category.description, children: @category.sub_categories, id: @category.id }
@@ -60,7 +60,7 @@ class CategoryController < ApplicationController
   end
 
   def update
-    @category = Category.find_by(name: params[:id])
+    @category = Category.find_by(name: params[:category][:name])
     if @category
       @category.update(params.require(:category).permit(:description, :name))
       render json: {success: "update complete"}
