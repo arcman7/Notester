@@ -3,7 +3,7 @@
       <!-- .aside -->
       <aside class="aside-xxl b-l b-r" id="tree-list">
           <div style="width: 100%;" class="btn-group">
-          <button style="width: 100%; height: 50px" class="btn btn-green dropdown-toggle" data-toggle="dropdown">Notes <span class="caret"></span></button>
+          <button style="width: 100%; height: 50px" id="dropTree" class="btn btn-green dropdown-toggle" data-toggle="dropdown">Notes <span class="caret"></span></button>
             <ul class="dropdown-menu">
 
               <li class="dropdown-submenu">
@@ -52,40 +52,55 @@
       <!-- /.aside -->
       <!-- .aside -->
       <aside id="note-detail">
-       <!-- <script type="text/template" id="note-template"> -->
           <section class="vbox">
             <header class="header bg-light lter bg-gradient b-b">
-              <p id="social-buttons">
-                  <a style="color: steelblue" href="#" class="btn-rounded btn-sm btn-icon"><i class="fa fa-circle"></i></a>
-                  <a style="color: #65bd77" href="#" class="btn-rounded btn-sm btn-icon"><i class="fa fa-circle"></i></a>
+              <div class="row">
+                <div class="col-lg-3">
                    <% if session[:user_id] %>
-                      <%= link_to "Log out", '/logout', onClick: "logOut()", id: 'logOutLink', method: :post %>
+                         <%= link_to '<i data-toggle="tooltip" data-placement="left" title="Log Out" class="fa fa-sign-out fa-2x"></i>'.html_safe, '/logout', onClick: "logOut()", id: 'logOutLink', method: :post %>
                    <% end %>
-              </p>
-              <a href="#" id="note-title">Note Title</a>
-              <span class="pull-right">
-                <% if session[:user_id] == nil %>
-                    <p>Hello <strong  style="color: red;" id="user-username"></strong>!</p>
-                <% else %>
-                    <% user = User.find(session[:user_id]) %>
-                    <p> Hello  <strong><span style="color: #65bd77;" id="user-username"></span></strong>!</p>
-                <% end %>
-                <p id="note-date" ></p>
-              <span>
+                  <p id="social-buttons">
+                      <a style="color: steelblue" href="#" class="btn-rounded btn-sm btn-icon"><i class="fa fa-circle"></i></a>
+                      <a style="color: #65bd77" href="#" class="btn-rounded btn-sm btn-icon"><i class="fa fa-circle"></i></a>
+                  </p>
+                </div>
+                <div style="text-align: center" class="col-lg-6">
+                  <a href="#" id="note-title">Note Title</a>
+                </div>
+                <div class="col-lg-3">
+                  <span class="pull-right">
+                    <% if session[:user_id] == nil %>
+                        <p>Hello <strong  style="color: red;" id="user-username"></strong>!</p>
+                    <% else %>
+                        <% user = User.find(session[:user_id]) %>
+                        <p> Hello  <strong><span style="color: #65bd77;" id="user-username"></span></strong>!</p>
+                    <% end %>
+                  </span>
+                </div>
+              </div>
             </header>
             <section class="bg-light lter">
               <section class="hbox stretch">
                 <aside>
                   <section class="vbox b-b">
                     <section class="paper">
-                        <textarea type="text" id="note-text-area" class="form-control scrollable" placeholder="Type your note here"></textarea>
+                        <textarea type="text" id="note-text-area" class="form-control scrollable" placeholder="Type your note here">
+                        </textarea>
                     </section>
                   </section>
                 </aside>
               </section>
+                    <div class="noteFooter">
+                        <div class="input-group margin-bottom-sm">
+                          <span class="input-group-addon"><i class="fa fa-tags fa-fw"></i></span>
+                          <input class="form-control" type="text" placeholder="Add Tag" data-role="tagsinput">
+                        </div>
+                        <div class= "pull-right">
+                            <p id="note-date" > </p>
+                        </div>
+                    </div>
             </section>
           </section>
-       <!-- </script> -->
       </aside>
       <!-- /.aside -->
       <!-- .aside -->

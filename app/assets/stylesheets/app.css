@@ -1951,10 +1951,11 @@ fieldset[disabled] .btn-gplus.active {
   background: -webkit-linear-gradient(top,#f0f0f0 0%,white 5%) 0 0;
   background: -moz-linear-gradient(top,#f0f0f0 0%,white 5%) 0 0;
   background: linear-gradient(top,#f0f0f0 0%,white 5%) 0 0;
-  -webkit-background-size: 100% 30px;
-  -moz-background-size: 100% 30px;
-  -ms-background-size: 100% 30px;
-  background-size: 100% 30px;
+  -webkit-background-size: 90% 30px;
+  -moz-background-size: 90% 30px;
+  -ms-background-size: 90% 30px;
+  background-size: 90% 30px;
+
 }
 .paper:before {
   content: '';
@@ -1968,9 +1969,13 @@ fieldset[disabled] .btn-gplus.active {
 .paper textarea {
   border: none;
   background-color: transparent;
+  bottom-margin: 30px;
   padding: 30px 0 0 55px;
   line-height: 30px;
   min-height: 210px;
+}
+.paper textarea{
+  height: 675px;
 }
 .tags .label {
   font-size: 1em;
@@ -3225,6 +3230,7 @@ fieldset[disabled] .btn-gplus.active {
 #note-title {
     font-size: 30px;
     margin-left: 10%;
+    text-align: center;
   }
 
 .bb-alert {
@@ -3251,6 +3257,14 @@ fieldset[disabled] .btn-gplus.active {
   margin-top: 5px;
   border-radius: 15px;
   padding: 15px;
+}
+
+#noteFooter{
+  background-color: white;
+  display: block;
+  bottom: 0;
+  height:10%;
+  width: 100%;
 }
 
 @media screen and (min-width: 992px) {

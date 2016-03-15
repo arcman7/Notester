@@ -42,6 +42,7 @@ function logOut(){
    $("#logOutLink").on('click', function(){
         console.log('hit');
         localStorage.notesterUser = "Anon";
+        location.reload();
     })
 };
 var strSignIn="";
