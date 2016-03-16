@@ -7,9 +7,9 @@ class CategoryController < ApplicationController
   def index
     @flare = Category.find_by(name: "flare")
     p '*'*90
-    p @flare
     #@programming_languages = Category.find_by(name: "Programming Languages")
     flare_tree = @flare.get_tree_sub_cats
+    p flare_tree
     #programming_languages_tree = @programming_languages.get_tree_sub_cats
     # render json: {flareTreeArray: flare_tree.to_json, programmingLanguagesTreeArray: programming_languages_tree.to_json }
     # render json: {flareTree: flare_tree.to_json, programmingLanguagesTree: programming_languages_tree.to_json }
