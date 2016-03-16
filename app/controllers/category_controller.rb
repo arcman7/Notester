@@ -31,7 +31,20 @@ class CategoryController < ApplicationController
     end
 
     render json: {success: "create and save complete", id: @new_category.id}#, status: 204
-  end
+  end#create
+
+  def show_by_name
+    if params[:id]
+       @category = Category.find_by(name: params[:id]) #better to use resource names rather than id for now
+       if @category
+          render json: { description: @category.description, children: @category.sub_categories, id: @category.id, parent: @category.parent_category }
+       else
+          render json: {error: "resource not found"}
+       end
+   else
+      render json: {error: "no search params were given"}
+   end
+  end#show_by_name
 
   def show
     #@category = Category.find_by(name: params[:id])
@@ -57,7 +70,7 @@ class CategoryController < ApplicationController
     else
       render json: {error: "category name missing from params/data"}
     end
-  end
+  end#tree
 
   def update
     @category = Category.find_by(name: params[:category][:name])
@@ -82,14 +95,5 @@ class CategoryController < ApplicationController
     else
       render json: {error: "update was not successful"}
     end
-  end
-
-  def show_by_name
-     @category = Category.find_by(name: params[:id]) #better to use resource names rather than id for now
-     if @category
-        render json: { description: @category.description, children: @category.sub_categories, id: @category.id, parent: @category.parent_category }
-     else
-        render json: {error: "resource not found"}
-     end
-  end#show_by_name
+  end#update_parent
 end

@@ -50,6 +50,18 @@ class ResourceController < ApplicationController
     end
   end#create
 
+  def show_by_name
+      if params[:id]
+         @resource = Resource.find_by(title: params[:id]) #better to use resource names rather than id for now
+         if @resource
+            render json: { description: @resource.description, children: @resource.children, id: @resource.id, parent: @resource.parents.first }
+         else
+            render json: {error: "resource not found"}
+         end
+      else
+          render json: {error: "no search params were given"}
+      end
+  end#show_by_name
   def show
     #@resource = Resource.find_by(title: params[:id]) #better to use resource names rather than id for now
     @resource = Resource.find( params[:id] )
@@ -150,13 +162,4 @@ class ResourceController < ApplicationController
       render json: {error: "update was not successful"}
     end
   end
-
-  def show_by_name
-     @resource = Resource.find_by(title: params[:id]) #better to use resource names rather than id for now
-     if @resource
-        render json: { description: @resource.description, children: @resource.children, id: @resource.id, parent: @resource.parents.first }
-     else
-        render json: {error: "resource not found"}
-     end
-  end#show_by_name
 end
