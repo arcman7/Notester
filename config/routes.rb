@@ -1,8 +1,13 @@
 Rails.application.routes.draw do
   get 'welcome/index'
 
-  resources :category
-  resources :resource
+  get   'resource/show_by_name/:id' => 'resource#sho_by_name'
+  get   'category/show_by_name/:id' => 'category#sho_by_name'
+  get   'category/tree/:id' => 'category#tree'
+  get   'category/:id' => 'category#show'
+  get   'resource/:id' => 'resource#show'
+  resources :category, except: [:show]
+  resources :resource, except: [:show]
   resources :welcome, only: [:index]
 
   resources :user
@@ -11,7 +16,7 @@ Rails.application.routes.draw do
   post  '/logout' => 'session#destroy'
   patch 'category/update_parent/:id' => 'category#update_parent'
   patch 'resource/update_parent/:id' => 'resource#update_parent'
-  get   'category/tree/:id' => 'category#tree'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

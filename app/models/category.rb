@@ -74,7 +74,7 @@ class Category < ActiveRecord::Base
       return if parent.sub_categories.length == 0
       #p self.name
       current_node["children"] =  []
-      parent.sub_categories.each{|cat| current_node["children"].push({name: cat.name, parent: cat.parent_category.name, id: cat.id }) }
+      parent.sub_categories.each{|cat| current_node["children"].push({name: cat.name, parent: cat.parent_category.name, id: cat.id, parent_id: cat.parent_category.id }) }
       p current_node
       parent.sub_categories.each do |subcat|
         index     = current_node["children"].index{|node| node[:name] == subcat.name}
@@ -83,7 +83,7 @@ class Category < ActiveRecord::Base
       end
     end
     def get_tree_sub_cats
-      @@results = { name: self.name, parent: nil, id: self.id }
+      @@results = { name: self.name, parent: nil, id: self.id, parent_id: nil }
       recurse_cats(self,@@results)
       @@results
     end

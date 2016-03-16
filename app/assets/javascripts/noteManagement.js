@@ -1,5 +1,8 @@
+window.notesterGLOBALS = {};
+
 localStorage["notes-app"] = ""; //controller
-var storageKeys  = [];           //controller
+var storageKeys  = []; //GLOBAL //controller-params
+
 function setKeys(){
   for(var i=33; i<127; i++){
     storageKeys.push( String.fromCharCode(i) );
@@ -8,28 +11,94 @@ function setKeys(){
 setKeys();                       //controller
 var storageIndex = 0;            //controller
 
-var route = "resource";
+var ROUTE = "resource";
 
 function id(){ return storageKeys[storageIndex] };
-function htmlTemplate(idd){ //view
+function htmlTemplate(idd,title,subject,update){ //view
+  title   = (title || "Note Title");
+  subject = (subject || "Subject");
   var idd =  ( idd || id() );
+  strVar1 = "<li class=\"list-group-item hover active\" >";
+  strVar2 = "                    <\/li>";
+  if(update){
+    strVar1 = strVar2 = "";
+  }
+
   strVar = ""
-  strVar += "<li class=\"list-group-item hover active\" >";
+  strVar += strVar1;
   strVar += "                      <div class=\"view\">";
   strVar += "                        <button class=\"destroy close hover-action\">×<\/button>";
   strVar += "                        <div class=\"note-name\">";
   strVar += "                          <strong>";
-  strVar += "                            Note Title";
+  strVar += "                            "+title;
   strVar += "                          <\/strong>";
   strVar += "                        <\/div>";
   strVar += "                        <div class=\"note-subject\">";
-  strVar += "                          Subject";
+  strVar += "                          "+subject;
   strVar += "                        <\/div>";
   strVar += "                        <span class=\"text-xs text-muted\"><\/span>";
   strVar += "                      <\/div>";
   strVar += "                      <div hidden class='storageIndex'>"+idd+"</div>";
-  strVar += "                    <\/li>";
+  strVar += strVar2;
+
   return strVar;
+}
+
+// $('.list-group-item').on('click',function(e){
+//  // console.log( $(this).children('.note-subject'))
+//  // var stuff = $(this).children('div.view > div.note-subject');
+//  //
+//  var stuff = $(this).children().children('div.note-subject').text()
+//  console.log(stuff);
+// })\
+function searchResource(term){
+  var url = PROTOCOL + '//' + DOMAIN + '/' + 'resource' + '/show_by_name/'+term;
+  $.ajax({
+  url: url,
+  type: "GET"
+  })
+  .done( function (response) {
+    console.log( response);
+  });//end done
+}
+function searchCategory(term){
+  var url = PROTOCOL + '//' + DOMAIN + '/' + 'category' + '/show_by_name/'+term;
+  $.ajax({
+    url: url,
+    type: "GET"
+  })
+  .done( function (response) {
+    console.log( response)
+  });//end done
+}
+function searchListener(){
+  var container = $('.input-group')
+  container.on('click', ".input-sm", function (e){
+    var searchTerm = $('#search-note').val();
+    console.log("hiiii");
+    searchResource(searchTerm);
+    searchCategory(searchTerm);
+  });
+
+}
+
+
+function setNoteDom(noteObject,liDomNote){  //controller: model-view sync
+    //set title at top of page
+    $('#note-title').text(noteObject.title);
+    if(liDomNote){
+       liDomNote.children().children('div.note-subject').text(noteObject.subject);
+       liDomNote.children().children('div.note-name').text(noteObject.title);
+    }
+    //var description = $('#note-text-area').val();
+}
+
+
+function getd3NoteParams(){
+  var title       = $('#note-title').text();
+  var description = $('#note-text-area').val();
+  var subject     = sessionStorage.notesterNodeParent;
+  return {title: title, subject: subject, description: description};
 }
 
 function MetaModelConstructor(){  //controller-model ??
@@ -43,7 +112,6 @@ function MetaModelConstructor(){  //controller-model ??
         behavior.push(arguments[i]);
       }
    }
-  //console.log(properties)
   var ModelConstructor = function(){
     for(var i =0; i< properties.length; i++){
        this[properties[i]] = arguments[i]; //set up property assignment arguments
@@ -60,19 +128,38 @@ function MetaModelConstructor(){  //controller-model ??
 
 Note = MetaModelConstructor('user',"title","subject",'description'); //Note() is the Note constructor
 
-function addNote(id){             //view
+function addNote(id,newNote){             //view, mixed with d3-node handling
   var noteContainer = $('#note-items');
   //console.log("noteContainer: ",noteContainer)
   if(id){
-    storageIndex = noteContainer.append(htmlTemplate(id));
+    //storageIndex = //what was this for?
+    var subject,title;
+    if(newNote){ //handles creating a new note for node in focus //model mixed with d3 behavior
+      //model-d3
+      var noteParams = getd3NoteParams();
+      var note = new Note(localStorage.notesterUser, noteParams.title, noteParams.subject,noteParams.description); //model
+      /////////////// D3 specific behavior //////////////
+      note.route = "category";
+
+      localStorage['notes-app-'+id] = JSON.stringify(note);
+      subject = noteParams.subject; title = noteParams.title;
+      //what do i do with this? call htmlTemplate(id,title,subject)
+    }
+    else{
+      var noteObject = JSON.parse( localStorage['notes-app-'+id] );
+      subject = noteObject.subject; title = noteObject.title;
+    }
+    noteContainer.append(htmlTemplate(id,title,subject));
     return;
   }
                 //controller
-  var note = new Note(localStorage.notesterUser, "blank","blank","blank");
+  var note = new Note(localStorage.notesterUser, "title","subject","blank");
+
   noteContainer.append(htmlTemplate());  //view
 
   //console.log(JSON.stringify(note))
-  $('#note-text-area').val(note.description);
+  $('#note-text-area').val(note.description); //view
+  $('#note-title').text(note.title);    //view
   localStorage["notes-app-"+storageKeys[storageIndex]] = JSON.stringify(note); //controller?
   sessionStorage.notesterIdFocus = storageKeys[storageIndex] //set the focus to the new note dom object //controller
 
@@ -84,6 +171,7 @@ function bindFocus(container){//clicking inside a the tab sets localStorage.note
   container.on('click','.list-group-item',function (e){
     var storageId = $(this).children('.storageIndex').text();   //controller
     //localStorage.notesterIdFocus = storageId;                     //controller
+    FOCUS = $(this); //global var - controller
     console.log("storageId: ",storageId);
     sessionStorage.notesterIdFocus = storageId;  //model
     $('.active').removeClass('active');          //view
@@ -108,17 +196,17 @@ function createNoteListener(){ //controller
 function updateNoteContentListener(){
   $('#note-text-area').bind('input propertychange', function() {
      //var storageId = localStorage.notesterIdFocus;
-     var storageId = sessionStorage.notesterIdFocus;
+    var storageId = sessionStorage.notesterIdFocus;
     if( sessionStorage.loggedInStatus ){ //is the user logged in?
-      console.log(" NO pre-existing note: ",!localStorage["notes-app-"+storageId])
+      console.log(" NO pre-existing note?: ",!localStorage["notes-app-"+storageId])
       if(!localStorage["notes-app-"+storageId] ){
-        addNote();
+        addNote(storageId,true);        //view  //makes unique ids for node-note objects
       }
     }
      var storageId = sessionStorage.notesterIdFocus;
-     console.log("storageId: ",storageId)
+     console.log("storageId: ",storageId);
      var noteObject = JSON.parse(localStorage["notes-app-"+storageId]);
-     console.log(noteObject);
+     //console.log(noteObject);
      noteObject.description = $('#note-text-area').val();
      localStorage["notes-app-"+storageId] = JSON.stringify(noteObject);
   }); //bind end
@@ -139,13 +227,20 @@ function reIndexModels(){ //model management/maintanence
  for(key in localStorage){
     //1. take key and make new key
     if(key.includes('notes-app-')){
-      newKey   = storageKeys[counter]; //model
-      newValueCopy = localStorage[key]; //if the set of noteobjects and keys have no holes, then newKey and key are equivalent// also, model
-      delete localStorage[key];
-      localStorage["notes-app-" + newKey] = newValueCopy;
-      addNote(newKey);
-      console.log("key: ", newKey);
-      counter++;
+        var id = key.split('-')[2];
+        console.log("reIndexModels id: ",id)
+        if(id > 1){ //doesnt mess with node noteObjects
+          newKey   = storageKeys[counter]; //model
+          newValueCopy = localStorage[key]; //if the set of noteobjects and keys have no holes, then newKey and key are equivalent// also, model
+          delete localStorage[key];
+          localStorage["notes-app-" + newKey] = newValueCopy;
+          addNote(newKey);
+          console.log("key: ", newKey);
+          counter++;
+        }
+        else{
+          addNote(id); //add in node-note object mdodel to the dom (right hand side)
+        }
     }
  }//end for
 $('.active').removeClass('active'); //view
@@ -171,42 +266,38 @@ function editNoteListener(container){
             callback: function(){
               var editNoteSubject = $('#editNoteSubject').val();
               var editNoteTitle   = $('#editNoteTitle').val();
-              var strVar = "";
-              strVar += "                      <div class=\"view\">";
-              strVar += "                        <button class=\"destroy close hover-action\">×<\/button>";
-              strVar += "                        <div class=\"note-name\">";
-              strVar += "                          <strong>";
-              strVar += "                         "+editNoteTitle;
-              strVar += "                          <\/strong>";
-              strVar += "                        <\/div>";
-              strVar += "                        <div class=\"note-subject\">";
-              strVar += "                         "+editNoteSubject;
-              strVar += "                        <\/div>";
-              strVar += "                        <span class=\"text-xs text-muted\"><\/span>";
-              strVar += "                      <\/div>";
-              strVar += "                      <div hidden class='storageIndex'>"+idd+"</div>";
+
+              var strVar = htmlTemplate(idd, editNoteTitle, editNoteSubject,true);
               note.html(strVar);
-              if(localStorage["notes-app-"+idd]){               //model
+              if(localStorage["notes-app-"+idd]){//is it in local storage?   //model
                 var noteObject = JSON.parse(localStorage["notes-app-"+idd]); //model
+                //updating model
                 noteObject.title   = editNoteTitle;
                 noteObject.subject = editNoteSubject;
                 localStorage["notes-app-"+idd] = JSON.stringify(noteObject); //model
+
+                //updating view
                 $('#note-title').text(noteObject.title);          //view
                 $('#note-text-area').val(noteObject.description); //view
-                $.ajax({
-                  url: protocol + '//' + domain + '/' + route + '/' + editNoteTitle,
-                  type: "PATCH",
-                  data: { resource: { title: editNoteTitle, description: noteObject.description, subject: editNoteSubject } }
-                }).done(function (response){
+
+                //Backend communications/request
+                var data = { resource: { title: editNoteTitle, description: noteObject.description}, parent: editNoteSubject, username: localStorage.notesterUser }; //model
+                var request = $.ajax( setAjaxCall(noteObject, data) ); //controller
+                request.done(function (response){
+                  console.log(response);
                   if(response.success){
+                    noteObject.id = response.id;
+                    noteObject.parent_id = response.parent_id;
+
+                    localStorage["notes-app-"+idd] = JSON.stringify(noteObject); //model
                     $('.bb-alert').delay(200).fadeIn().delay(4000).fadeOut(); //dom-view
                   }
                   else{
                     $('.bb-alert-fail').delay(200).fadeIn().delay(4000).fadeOut(); //dom-view
                   }
                 })
-              }
-            }
+              }//if note object exsists in local storage (should already)
+            }//end callback
         }
       }
     })
@@ -225,6 +316,7 @@ function noteBehaviorController(){
   createNoteListener();        //controller-view behavior
   updateNoteContentListener(); //controller-view-model behavior
   editNoteListener(noteContainer);    //controller-view
+  searchListener();             //controller-backend-view
 }
 
 

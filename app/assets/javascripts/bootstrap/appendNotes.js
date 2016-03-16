@@ -9,6 +9,6 @@ $(document).ready(function(){
 
 function createNote(){
   $('.form-control').on('input', function() {
-    console.log("heyaaa");
+    //console.log("heyaaa");
   });
 }
