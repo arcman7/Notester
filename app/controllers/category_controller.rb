@@ -6,6 +6,8 @@ class CategoryController < ApplicationController
 
   def index
     @flare = Category.find_by(name: "flare")
+    p '*'*90
+    p @flare
     #@programming_languages = Category.find_by(name: "Programming Languages")
     flare_tree = @flare.get_tree_sub_cats
     #programming_languages_tree = @programming_languages.get_tree_sub_cats
