@@ -58,7 +58,6 @@
                 <div class="col-lg-3">
                    <% if session[:user_id] %>
                          <%= link_to '<i data-toggle="tooltip" data-placement="left" title="Log Out" class="fa fa-sign-out fa-2x"></i>'.html_safe, '/logout', onClick: "logOut()", id: 'logOutLink', method: :post %>
-                          <!-- <a href="/logout" onclick="logOut()" id='logOutLink' data-toggle="tooltip" data-placement="left" title="Log Out" class="fa fa-sign-out fa-2x"></a> -->
                    <% end %>
                   <p id="social-buttons">
                       <a style="color: steelblue" href="#" class="btn-rounded btn-sm btn-icon"><i class="fa fa-circle"></i></a>
@@ -91,15 +90,15 @@
                   </section>
                 </aside>
               </section>
-                    <div class="noteFooter">
-                        <div class="input-group margin-bottom-sm">
-                          <span class="input-group-addon"><i class="fa fa-tags fa-fw"></i></span>
-                          <input class="form-control" type="text" placeholder="Add Tag" data-role="tagsinput">
-                        </div>
-                        <div class= "pull-right">
-                            <p id="note-date" > </p>
-                        </div>
-                    </div>
+              <div class="footer">
+                  <div style="margin-top: 2%" class="input-group margin-bottom-sm">
+                    <span class="input-group-addon"><i class="fa fa-tags fa-fw"></i></span>
+                    <input id="tagsInput" class="form-control" type="text" placeholder="Add Tag" data-role="tagsinput">
+                  </div>
+                  <div class= "pull-right">
+                      <p id="note-date" > </p>
+                  </div>
+              </div>
             </section>
           </section>
       </aside>
@@ -122,9 +121,11 @@
                 <div class="padder">
                   <!-- note list -->
                   <ul id="note-items" class="list-group list-group-sp"></ul>
-
-                  <li class="bb-alert list-group-item"><i style="margin-top: 2%" class="fa fa-check fa-lg pull-left"></i>Note Saved!</li>
-                  <li class="bb-alert-fail list-group-item"><i style="margin-top: 2%" class="fa fa-close fa-lg pull-left"></i>Note did NOT save!</li>
+                  <li class="bb-alert list-group-item"><i style="margin-top: 2%" class="fa fa-check fa-lg pull-left"></i>     Note Saved!
+                  </li>
+                  <li class="bb-alert-fail list-group-item"><i style="margin-top: 2%" class="fa fa-close fa-lg pull-left"></i>
+                       Note did NOT save!
+                  </li>
                   <li style="display: none"class="list-group-item">Note did NOT save!</li>
                 </div>
               </section>
