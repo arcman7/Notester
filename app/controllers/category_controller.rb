@@ -1,15 +1,14 @@
 class CategoryController < ApplicationController
   require 'json'
-  require 'uri'
 
   skip_before_action :verify_authenticity_token
 
   def index
     @flare = Category.find_by(name: "flare")
-    p '*'*90
+    #p '*'*90
     #@programming_languages = Category.find_by(name: "Programming Languages")
     flare_tree = @flare.get_tree_sub_cats
-    p flare_tree
+
     #programming_languages_tree = @programming_languages.get_tree_sub_cats
     # render json: {flareTreeArray: flare_tree.to_json, programmingLanguagesTreeArray: programming_languages_tree.to_json }
     # render json: {flareTree: flare_tree.to_json, programmingLanguagesTree: programming_languages_tree.to_json }
@@ -17,7 +16,18 @@ class CategoryController < ApplicationController
   end
 
   def create
-    @new_category = Category.new(params.require(:category).permit(:name))
+    if !params[:category][:name]
+      return "error: missing params; category[:name]"
+    end
+
+    @category = Category.find_by(name: params[:category][:name])
+    if @category #check for pre-exsisting category(should happen once per browser because the id is not set)
+      @new_category = @category
+      @new_category.update(params.require(:category).permit(:description, :name))
+    else
+      @new_category = Category.new(params.require(:category).permit(:name, :description))
+    end
+
     @parent_category = false
     if params[:parent_id]
       @parent_category = Category.find(params[:parent_id])
@@ -29,7 +39,7 @@ class CategoryController < ApplicationController
         @parent_category.sub_categories << @new_category
       end
     rescue ActiveRecord::RecordInvalid => e
-      render json: {error: e.record.errors.details}, status: 400
+      render json: {error: e.record.errors.details}#, status: 400
     end
 
     render json: {success: "create and save complete", id: @new_category.id}#, status: 204
@@ -49,13 +59,16 @@ class CategoryController < ApplicationController
   end#show_by_name
 
   def show
-    #@category = Category.find_by(name: params[:id])
-    @category = Category.find( params[:id] )
-
-    if @category
-      render json: { description: @category.description, children: @category.sub_categories, id: @category.id }
+    if params[:type] == 'name'
+        show_by_name
     else
-      render json: {error: "category not found"}
+        @category = Category.find( params[:id] )
+
+        if @category
+          render json: { description: @category.description, children: @category.sub_categories, id: @category.id }
+        else
+          render json: {error: "category not found"}
+        end
     end
   end #show
 
@@ -70,7 +83,7 @@ class CategoryController < ApplicationController
         render json: {error: "category not found"}
       end
     else
-      render json: {error: "category name missing from params/data"}
+      render json: {error: "category-name missing from params/data"}
     end
   end#tree
 

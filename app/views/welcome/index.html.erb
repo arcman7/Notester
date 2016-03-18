@@ -55,7 +55,7 @@
           <section class="vbox">
             <header class="header bg-light lter bg-gradient b-b">
               <div class="row">
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                    <% if session[:user_id] %>
                          <%= link_to '<i data-toggle="tooltip" data-placement="left" title="Log Out" class="fa fa-sign-out fa-2x"></i>'.html_safe, '/logout', onClick: "logOut()", id: 'logOutLink', method: :post %>
                    <% end %>
@@ -64,7 +64,7 @@
                       <a style="color: #65bd77" href="#" class="btn-rounded btn-sm btn-icon"><i class="fa fa-circle"></i></a>
                   </p>
                 </div>
-                <div style="text-align: center" class="col-lg-6">
+                <div style="text-align: center" class="col-lg-7">
                   <a href="#" id="note-title">Note Title</a>
                 </div>
                 <div class="col-lg-3">

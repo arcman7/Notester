@@ -52,20 +52,22 @@ function htmlTemplate(idd,title,subject,update){ //view
 //  console.log(stuff);
 // })\
 function searchResource(term){
-  var url = PROTOCOL + '//' + DOMAIN + '/' + 'resource' + '/show_by_name/'+term;
+  var url = PROTOCOL + '//' + DOMAIN + '/' + 'resource/'+term;//+'&type=name';
   $.ajax({
   url: url,
-  type: "GET"
+  type: "GET",
+  data: {type: "name"}
   })
   .done( function (response) {
     console.log( response);
   });//end done
 }
 function searchCategory(term){
-  var url = PROTOCOL + '//' + DOMAIN + '/' + 'category' + '/show_by_name/'+term;
+  var url = PROTOCOL + '//' + DOMAIN + '/' + 'category/'+term;//+'&type=name';
   $.ajax({
     url: url,
-    type: "GET"
+    type: "GET",
+    data: {type: "name"}
   })
   .done( function (response) {
     console.log( response)
@@ -73,7 +75,7 @@ function searchCategory(term){
 }
 function searchListener(){
   var container = $('.input-group')
-  container.on('click', ".input-sm", function (e){
+  container.on('click', ".input-group-addon.input-sm", function (e){
     var searchTerm = $('#search-note').val();
     console.log("hiiii");
     searchResource(searchTerm);
@@ -97,8 +99,9 @@ function setNoteDom(noteObject,liDomNote){  //controller: model-view sync
 function getd3NoteParams(){
   var title       = $('#note-title').text();
   var description = $('#note-text-area').val();
-  var subject     = sessionStorage.notesterNodeParent;
-  return {title: title, subject: subject, description: description};
+  var parent      = JSON.parse(sessionStorage.notesterNodeParent);
+  var subject     = parent.name;//sessionStorage.notesterNodeParent;
+  return {title: title, subject: subject, description: description, parent: parent};
 }
 
 function MetaModelConstructor(){  //controller-model ??
@@ -138,6 +141,8 @@ function addNote(id,newNote){             //view, mixed with d3-node handling
       //model-d3
       var noteParams = getd3NoteParams();
       var note = new Note(localStorage.notesterUser, noteParams.title, noteParams.subject,noteParams.description); //model
+      note.id = sessionStorage.nosterObjectId; // identifies that the object has been previously saved
+      note.parent_id = noteParams.parent.id;
       /////////////// D3 specific behavior //////////////
       note.route = "category";
 
