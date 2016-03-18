@@ -13,6 +13,15 @@ class ResourceController < ApplicationController
     #   @resource.update(params.require(:resource).permit(:description, :title))
     #   render json: {success: "update complete"}
     # end
+
+    #check params for required fields/keys
+    if !params[:resource]
+      return "missing params[:resource]"
+      if !params[:resource][:title] || !params[:resource][:description]
+        return "missing params[:resource] or params[:description]"
+      end
+    end
+
     @new_resource = Resource.new(params.require(:resource).permit(:title, :description, :file) )
     # user should already be in the params hash, but parent is optional
     if params[:username]
@@ -22,7 +31,7 @@ class ResourceController < ApplicationController
     if params[:parent] && @user
       @parent = @user.resources.find_by(title: params[:parent])
       if !@parent
-        @parent = Resource.create(title: params[:parent]) ####################### left off here3
+        @parent = Resource.create(title: params[:parent])
       end
     end
     if @user
@@ -63,13 +72,16 @@ class ResourceController < ApplicationController
       end
   end#show_by_name
   def show
-    #@resource = Resource.find_by(title: params[:id]) #better to use resource names rather than id for now
-    @resource = Resource.find( params[:id] )
-     if @resource
-        render json: { description: @resource.description, children: @resource.children, id: @resource.id, parent: @resource.parents.first }
-     else
-        render json: {error: "resource not found"}
-     end
+    if params[:type] == 'name'
+        show_by_name
+    else
+       @resource = Resource.find( params[:id] )
+       if @resource
+          render json: { description: @resource.description, children: @resource.children, id: @resource.id, parent: @resource.parents.first }
+       else
+          render json: {error: "resource not found"}
+       end
+    end
   end#show
 
   def get_user_tree

@@ -21,8 +21,9 @@ $('#tree-list .overlay').remove();
 treeJSON = d3.json(url, function(error, treeData) {
     //treeData = JSON.parse(treeData.flareTree);
     //treeData = JSON.parse(treeData.programmingLanguagesTree);
-    console.log(treeData)
     treeData = JSON.parse(treeData.tree);
+    //console.log("top:" ,treeData)
+
     route = 'category';
     // Calculate total nodes, max label length
     var totalNodes = 0;
@@ -325,7 +326,11 @@ treeJSON = d3.json(url, function(error, treeData) {
         //console.log(d.name);
         $('#note-title').text(d.name); //Set the note title at the top of the page
         sessionStorage.notesterIdFocus = d.name+d.id; //sets the note-Focus on the on the node (name+id = unique combo) //MODEL
-        sessionStorage.notesterNodeParent = d.parent.name; //sets the subject for addNote()
+        console.log(d.parent);
+        sessionStorage.notesterNodeParent = JSON.stringify({name:d.parent.name, id: d.parent.id});//d.parent.name; //sets the subject for addNote()
+
+        sessionStorage.nosterObjectId = d.id;
+
         $.ajax({
             //url: PROTOCOL + '//' + DOMAIN + '/' + route + '/' + d.name,
             url: PROTOCOL + '//' + DOMAIN + '/' + route + '/' + d.id,
@@ -499,6 +504,8 @@ treeJSON = d3.json(url, function(error, treeData) {
 
     // Define the root
     root = treeData;
+        console.log(root);
+
     root.x0 = viewerHeight / 2;
     root.y0 = 0;
     root.children.forEach(collapse);
@@ -515,3 +522,5 @@ treeJSON = d3.json(url, function(error, treeData) {
 //  type: "POST",
 //  data: {category: "flare"}
 // }).done(function(response){ console.log(response) });
+
+//notes about this file

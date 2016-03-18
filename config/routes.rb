@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   get 'welcome/index'
 
-  get   'resource/show_by_name/:id' => 'resource#sho_by_name'
-  get   'category/show_by_name/:id' => 'category#sho_by_name'
+  get   'resource/show_by_name/:id' => 'resource#show_by_name'
+  get   'category/show_by_name/:id' => 'category#show_by_name'
   get   'category/tree/:id' => 'category#tree'
   get   'category/:id' => 'category#show'
   get   'resource/:id' => 'resource#show'
