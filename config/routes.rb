@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   resources :welcome, only: [:index]
 
   resources :user
-  resources :session, ony: [:new, :create, :destroy]
+  resources :session, only: [:new, :create, :destroy]
   resources :tree
   post  '/logout' => 'session#destroy'
   patch 'category/update_parent/:id' => 'category#update_parent'
