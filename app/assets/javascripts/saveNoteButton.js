@@ -199,3 +199,21 @@ $(document).ready(function(){
   }
   signUp();
 });
+
+
+// function togglePublicPrivate(publicc,privatee){
+//   if(publicc){
+
+//     return;
+//   }
+//   else if(privatee){
+
+//     return;
+//   }
+//   //regular toggle button
+
+// }
+
+// togglePublicPrivate(true,false)
+// togglePublicPrivate(false,true)
+// togglePublicPrivate()

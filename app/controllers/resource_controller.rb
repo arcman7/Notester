@@ -63,7 +63,7 @@ class ResourceController < ApplicationController
       if params[:id]
          @resource = Resource.find_by(title: params[:id]) #better to use resource names rather than id for now
          if @resource
-            render json: { description: @resource.description, children: @resource.children, id: @resource.id, parent: @resource.parents.first }
+            render json: { resource: { description: @resource.description, children: @resource.children, id: @resource.id, title: @resource.title, parent: @resource.parents.first } }
          else
             render json: {error: "resource not found"}
          end

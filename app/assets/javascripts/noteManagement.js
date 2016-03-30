@@ -51,7 +51,7 @@ function htmlTemplate(idd,title,subject,update){ //view
 //  var stuff = $(this).children().children('div.note-subject').text()
 //  console.log(stuff);
 // })\
-function searchResource(term){
+function searchResource(term,container){
   var url = PROTOCOL + '//' + DOMAIN + '/' + 'resource/'+term;//+'&type=name';
   $.ajax({
   url: url,
@@ -59,10 +59,15 @@ function searchResource(term){
   data: {type: "name"}
   })
   .done( function (response) {
-    console.log( response);
+    console.log( response );
+    if(response.resource){
+      var resource = response.resource;
+      //code to render new hmtl and localstorage objects
+
+    }
   });//end done
 }
-function searchCategory(term){
+function searchCategory(term,container){
   var url = PROTOCOL + '//' + DOMAIN + '/' + 'category/'+term;//+'&type=name';
   $.ajax({
     url: url,
@@ -70,17 +75,22 @@ function searchCategory(term){
     data: {type: "name"}
   })
   .done( function (response) {
-    console.log( response)
+    console.log( response );
+    if(response.category){
+      var category = response.category;
+      //code to render new hmtl and localstorage objects
+
+    }
   });//end done
 }
 function searchListener(){
   var container = $('.input-group')
   container.on('click', ".input-group-addon.input-sm", function (e){
-    var searchTerm = $('#search-note').val();
-    console.log("hiiii");
-    searchResource(searchTerm);
-    searchCategory(searchTerm);
-  });
+      var searchTerm = $('#search-note').val();
+      //console.log("hiiii");
+      searchResource(searchTerm,container);
+      searchCategory(searchTerm,container);
+  });//end on click
 
 }
 
@@ -131,7 +141,7 @@ function MetaModelConstructor(){  //controller-model ??
 
 Note = MetaModelConstructor('user',"title","subject",'description'); //Note() is the Note constructor
 
-function addNote(id,newNote){             //view, mixed with d3-node handling
+function addNote(id,newNote,noteObject){             //view, mixed with d3-node handling
   var noteContainer = $('#note-items');
   //console.log("noteContainer: ",noteContainer)
   if(id){
@@ -227,6 +237,7 @@ function destroyNoteListener(container){ //view + model
 }
 
 function reIndexModels(){ //model management/maintanence
+  //alternative use: can be called at any time to re-render notes stored in localStorage
  var counter = 0;
  var newKey;
  for(key in localStorage){
@@ -248,8 +259,7 @@ function reIndexModels(){ //model management/maintanence
         }
     }
  }//end for
-$('.active').removeClass('active'); //view
-
+ $('.active').removeClass('active'); //view
 }
 
 function editNoteListener(container){

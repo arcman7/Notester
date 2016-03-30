@@ -46,16 +46,16 @@ class CategoryController < ApplicationController
   end#create
 
   def show_by_name
-    if params[:id]
-       @category = Category.find_by(name: params[:id]) #better to use resource names rather than id for now
-       if @category
-          render json: { description: @category.description, children: @category.sub_categories, id: @category.id, parent: @category.parent_category }
-       else
-          render json: {error: "resource not found"}
-       end
-   else
-      render json: {error: "no search params were given"}
-   end
+      if params[:id]
+         @category = Category.find_by(name: params[:id]) #better to use resource names rather than id for now
+         if @category
+            render json: { category: { description: @category.description, children: @category.sub_categories, id: @category.id, name: @category.name, parent: @category.parent_category } }
+         else
+            render json: {error: "resource not found"}
+         end
+      else
+         render json: {error: "no search params were given"}
+      end
   end#show_by_name
 
   def show
