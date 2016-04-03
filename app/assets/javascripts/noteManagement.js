@@ -262,6 +262,24 @@ function reIndexModels(){ //model management/maintanence
  $('.active').removeClass('active'); //view
 }
 
+var hardSave = function(){
+  $('#save-note').on('click', function(){
+    if ($("#user-username").css("color") !== "rgb(255, 0, 0)"){
+      for(key in localStorage){
+          //1. take key and make new key
+          if(key.includes('notes-app-')){
+              var id = key.split('-')[2];
+              console.log("hard save id: ",id)
+              var noteObject = JSON.parse(localStorage[key])
+              var data = { resource: { title: noteObject.title, description: noteObject.description}, parent: noteObject.subject || "subject", username: localStorage.notesterUser }; //model
+              var request = $.ajax( setAjaxCall(noteObject, data) );
+              $('.bb-alert').delay(200).fadeIn().delay(4000).fadeOut();
+          }
+        }
+      }
+  })
+}
+
 function editNoteListener(container){
   container.on('dblclick', '.list-group-item', function (e){
      var noteTitle   = $(this).children().children('.note-name').text().trim();
@@ -321,6 +339,19 @@ function editNoteListener(container){
 
   });//end on dblcick
 }
+function hardSave(){
+  for(key in localStorage){
+      //1. take key and make new key
+      if(key.includes('notes-app-')){
+          var id = key.split('-')[2];
+          console.log("hard save id: ",id)
+          var noteObject = JSON.parse(localStorage[key])
+          var data = { resource: { title: noteObject.title, description: noteObject.description}, parent: noteObject.subject || "subject", username: localStorage.notesterUser }; //model
+          var request = $.ajax( setAjaxCall(noteObject, data) );
+          $('.bb-alert').delay(200).fadeIn().delay(4000).fadeOut();
+      }
+  }
+}
 
 function noteBehaviorController(){
   var noteContainer = $('#note-items');
@@ -332,6 +363,7 @@ function noteBehaviorController(){
   updateNoteContentListener(); //controller-view-model behavior
   editNoteListener(noteContainer);    //controller-view
   searchListener();             //controller-backend-view
+  hardSave();
 }
 
 

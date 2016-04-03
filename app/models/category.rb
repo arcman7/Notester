@@ -1,28 +1,28 @@
-class Node
-  attr_accessor :name, :nodes, :tags
+# class Node
+#   attr_accessor :name, :nodes, :tags
 
-  def initialize(name, nodes,tags)
-    @name  = name
-    @nodes = nodes
-    @tags  = tags
-  end
-end
+#   def initialize(name, nodes,tags)
+#     @name  = name
+#     @nodes = nodes
+#     @tags  = tags
+#   end
+# end
 
-class Iterator
-  def initialize(node)
-    @node = node
-  end
+# class Iterator
+#   def initialize(node)
+#     @node = node
+#   end
 
-  def each_node
-    yield @node
-    for node in @node.nodes do
-      iterator = Iterator.new(node)
-      iterator.each_node {|next_node|
-        yield next_node
-      }
-    end
-  end
-end
+#   def each_node
+#     yield @node
+#     for node in @node.nodes do
+#       iterator = Iterator.new(node)
+#       iterator.each_node {|next_node|
+#         yield next_node
+#       }
+#     end
+#   end
+# end
 
 
 class Category < ActiveRecord::Base
