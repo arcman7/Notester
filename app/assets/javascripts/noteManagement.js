@@ -273,9 +273,9 @@ var hardSave = function(){
               var noteObject = JSON.parse(localStorage[key])
               var data = { resource: { title: noteObject.title, description: noteObject.description}, parent: noteObject.subject || "subject", username: localStorage.notesterUser }; //model
               var request = $.ajax( setAjaxCall(noteObject, data) );
-              $('.bb-alert').delay(200).fadeIn().delay(4000).fadeOut();
           }
         }
+        $('.bb-notes-alert').delay(200).fadeIn().delay(4000).fadeOut();
       }
   })
 }

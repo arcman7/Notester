@@ -3270,7 +3270,8 @@ fieldset[disabled] .btn-gplus.active {
     text-align: center;
   }
 
-.bb-alert {
+.bb-alert,
+.bb-notes-alert {
   display:none;
   text-align: center;
   font-size: 18px;
@@ -3283,7 +3284,8 @@ fieldset[disabled] .btn-gplus.active {
   padding: 10px;
 }
 
-.bb-alert-fail {
+.bb-alert-fail,
+.bb-notes-alert-fail {
   display:none;
   text-align: center;
   font-size: 18px;
