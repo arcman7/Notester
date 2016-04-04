@@ -262,24 +262,6 @@ function reIndexModels(){ //model management/maintanence
  $('.active').removeClass('active'); //view
 }
 
-var hardSave = function(){
-  $('#save-note').on('click', function(){
-    if ($("#user-username").css("color") !== "rgb(255, 0, 0)"){
-      for(key in localStorage){
-          //1. take key and make new key
-          if(key.includes('notes-app-')){
-              var id = key.split('-')[2];
-              console.log("hard save id: ",id)
-              var noteObject = JSON.parse(localStorage[key])
-              var data = { resource: { title: noteObject.title, description: noteObject.description}, parent: noteObject.subject || "subject", username: localStorage.notesterUser }; //model
-              var request = $.ajax( setAjaxCall(noteObject, data) );
-          }
-        }
-        $('.bb-notes-alert').delay(200).fadeIn().delay(4000).fadeOut();
-      }
-  })
-}
-
 function editNoteListener(container){
   container.on('dblclick', '.list-group-item', function (e){
      var noteTitle   = $(this).children().children('.note-name').text().trim();
@@ -340,28 +322,34 @@ function editNoteListener(container){
   });//end on dblcick
 }
 function hardSave(){
-  for(key in localStorage){
-      //1. take key and make new key
-      if(key.includes('notes-app-')){
-          var id = key.split('-')[2];
-          console.log("hard save id: ",id)
-          var noteObject = JSON.parse(localStorage[key])
-          var data = { resource: { title: noteObject.title, description: noteObject.description}, parent: noteObject.subject || "subject", username: localStorage.notesterUser }; //model
-          var request = $.ajax( setAjaxCall(noteObject, data) );
-          request.done(function (response){
-                  console.log(response);
-                  if(response.success){
-                    noteObject.id = response.id;
-                    noteObject.parent_id = response.parent_id; // waiting for server to update note parent and save in the local storage
-                    localStorage[key] = JSON.stringify(noteObject); //model
-                  }
-                  else{
-                    $('.bb-alert-fail').delay(200).fadeIn().delay(4000).fadeOut(); //dom-view
-                    console.log(object.id)
-                  }
-                })
-          $('.bb-alert').delay(200).fadeIn().delay(4000).fadeOut();
+   if ($("#user-username").css("color") !== "rgb(255, 0, 0)"){
+    $("#save-note").on('click', function(){
+      for(key in localStorage){
+          //1. take key and make new key
+          if(key.includes('notes-app-')){
+              var id = key.split('-')[2];
+              console.log("hard save idd: ",id,key);
+              var noteObject = JSON.parse(localStorage[key])
+              console.log('noteObject');
+              var data = { resource: { title: noteObject.title, description: noteObject.description}, parent: noteObject.subject || "subject", username: localStorage.notesterUser }; //model
+              var request = $.ajax( setAjaxCall(noteObject, data) );
+              request.done(function (response){
+                      console.log("response: ",response);
+                      if(response.success){
+                        noteObject.id = response.id;
+                        noteObject.parent_id = response.parent_id; // waiting for server to update note parent and save in the local storage
+                        localStorage[key] = JSON.stringify(noteObject); //model
+                      }
+                      else{
+                        $('.bb-alert-fail').delay(200).fadeIn().delay(4000).fadeOut(); //dom-view
+                        console.log(object.id)
+                      }
+                    });
+              console.log("thats not the art I know");
+              // $('.bb-alert').delay(200).fadeIn().delay(4000).fadeOut();
+          }
       }
+    })
   }
 }
 
