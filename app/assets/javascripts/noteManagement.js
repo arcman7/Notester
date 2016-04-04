@@ -348,6 +348,18 @@ function hardSave(){
           var noteObject = JSON.parse(localStorage[key])
           var data = { resource: { title: noteObject.title, description: noteObject.description}, parent: noteObject.subject || "subject", username: localStorage.notesterUser }; //model
           var request = $.ajax( setAjaxCall(noteObject, data) );
+          request.done(function (response){
+                  console.log(response);
+                  if(response.success){
+                    noteObject.id = response.id;
+                    noteObject.parent_id = response.parent_id; // waiting for server to update note parent and save in the local storage
+                    localStorage[key] = JSON.stringify(noteObject); //model
+                  }
+                  else{
+                    $('.bb-alert-fail').delay(200).fadeIn().delay(4000).fadeOut(); //dom-view
+                    console.log(object.id)
+                  }
+                })
           $('.bb-alert').delay(200).fadeIn().delay(4000).fadeOut();
       }
   }
