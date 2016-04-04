@@ -139,7 +139,6 @@ class ResourceController < ApplicationController
                 @parent.children << @resource
                 render json: {success: "update complete", id: @resource.id, parent_id: @parent.id }
                 #Do you even lyft
-
             else#creating parent if it doenst exist yet
                 @parent = @user.resources.create(title: params[:parent_title])
                 if @parent
@@ -169,7 +168,7 @@ class ResourceController < ApplicationController
       @old_parent = @resource.parent
       @old_parent.children.delete(@resource)
       @parent.children << @resource
-      render json: {update: "successful"}#, :status => 200
+      render json: {update: "successful", parent_id: @parent.id}#, :status => 200
     else
       render json: {error: "update was not successful"}
     end

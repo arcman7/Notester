@@ -18,10 +18,9 @@ var ROUTE,FOCUS;
 
 //data: new ResourceModel("jimmy","note contents","bean")
 
-function setAjaxCall(noteObject,data){
+function setAjaxCall(noteObject,data, key){
     data = (data || {});
     data.username = localStorage.notesterUser;
-
     var url,type;
     //wich rails controller are we hitting? //controller-parameters
     if(noteObject.route){

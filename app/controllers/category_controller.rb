@@ -28,7 +28,7 @@ class CategoryController < ApplicationController
       @new_category = Category.new(params.require(:category).permit(:name, :description))
     end
 
-    @parent_category = false
+    # @parent_category = false
     if params[:parent_id]
       @parent_category = Category.find(params[:parent_id])
     end
@@ -42,7 +42,7 @@ class CategoryController < ApplicationController
       render json: {error: e.record.errors.details}#, status: 400
     end
 
-    render json: {success: "create and save complete", id: @new_category.id}#, status: 204
+    render json: { success: "create and save complete", id: @new_category.id, parent_id: @parent_category.id }#, status: 204
   end#create
 
   def show_by_name
@@ -65,7 +65,7 @@ class CategoryController < ApplicationController
         @category = Category.find( params[:id] )
 
         if @category
-          render json: { description: @category.description, children: @category.sub_categories, id: @category.id }
+          render json: { description: @category.description, children: @category.sub_categories, id: @category.id, parent: @category.parent_category }
         else
           render json: {error: "category not found"}
         end
@@ -91,7 +91,12 @@ class CategoryController < ApplicationController
     @category = Category.find_by(name: params[:category][:name])
     if @category
       @category.update(params.require(:category).permit(:description, :name))
-      render json: {success: "update complete"}
+      if @category.parent_category
+        parent_id = @category.parent_category.id
+      else
+        parent_id = nil
+      end
+      render json: {success: "update complete", id: @category.id, parent_id: parent_id}
     else
       render json: {error: "category not found"}
     end
@@ -106,7 +111,7 @@ class CategoryController < ApplicationController
       @old_parent = @category.parent_category
       @old_parent.sub_categories.delete(@category)
       @parent.sub_categories << @category
-      render json: {update: "successful"}#, :status => 200
+      render json: {update: "successful", parent_id: @parent.id}#, :status => 200
     else
       render json: {error: "update was not successful"}
     end

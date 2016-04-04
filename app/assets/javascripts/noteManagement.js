@@ -324,20 +324,22 @@ function editNoteListener(container){
 function hardSave(){
    if ($("#user-username").css("color") !== "rgb(255, 0, 0)"){
     $("#save-note").on('click', function(){
-      for(key in localStorage){
+      for(notester_key in localStorage){
           //1. take key and make new key
-          if(key.includes('notes-app-')){
-              var id = key.split('-')[2];
-              console.log("hard save idd: ",id,key);
-              var noteObject = JSON.parse(localStorage[key])
-              console.log('noteObject');
+          if(notester_key.includes('notes-app-')){
+              var id = notester_key.split('-')[2];
+              //console.log("hard save id: ",id);
+              var noteObject = JSON.parse(localStorage[notester_key]);
+              var key = notester_key; //allow for closure reference to key;
               var data = { resource: { title: noteObject.title, description: noteObject.description}, parent: noteObject.subject || "subject", username: localStorage.notesterUser }; //model
-              var request = $.ajax( setAjaxCall(noteObject, data) );
+              var request = $.ajax( setAjaxCall(noteObject, data, key) );
               request.done(function (response){
+
                       console.log("response: ",response);
                       if(response.success){
                         noteObject.id = response.id;
-                        noteObject.parent_id = response.parent_id; // waiting for server to update note parent and save in the local storage
+                        noteObject.parent_id = response.parent_id; // waiting for server to save noteObject as resource or category and then update and  save in the local storage
+                        console.log("hard save key:",key);
                         localStorage[key] = JSON.stringify(noteObject); //model
                       }
                       else{
@@ -346,10 +348,10 @@ function hardSave(){
                       }
                     });
               console.log("thats not the art I know");
-              // $('.bb-alert').delay(200).fadeIn().delay(4000).fadeOut();
           }
       }
-    })
+      $('.bb-notes-alert.plural').delay(200).fadeIn().delay(4000).fadeOut();
+    });//end on click
   }
 }
 
