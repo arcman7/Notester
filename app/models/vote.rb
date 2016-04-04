@@ -5,7 +5,7 @@ class Vote < ActiveRecord::Base
 
     def unique_flag(user, resource)
       flag = user.id.to_s + "_" + resource.id.to_s
-      flag
+      #flag
     end
 end
 

@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   has_many :votes
-  has_many :resources, through: :votes
+  has_many :voted_on_resources, through: :votes, source: :resource
   has_many :resources
   has_many :trees, class_name: "Resource"
 

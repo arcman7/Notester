@@ -1,6 +1,6 @@
 class Resource < ActiveRecord::Base
   # Remember to create a migration!
- belongs_to :user
+  belongs_to :user
   #Child of many parents through foreign key
   has_many :parent_relations, foreign_key: :child_id, class_name: "Relation"
   has_many :parents, through: :parent_relations, source: :parent
@@ -20,7 +20,8 @@ class Resource < ActiveRecord::Base
   has_many :tags, through: :resource_tags
 
   has_many :votes
-  has_many :users, through: :votes
+  has_many :votees, through: :votes, source: :user
+
 
   def recurse_children(parent,current_node)
     return if parent.children.length == 0
