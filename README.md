@@ -5,7 +5,7 @@ Notester is a web app built on Rails that helps users share notes.
 Link: http://notester.herokuapp.com/
 
 
-Error codes:
+<!-- Error codes:
  CODE       ERROR-TYPE
  code: 1;   error: "user not logged in or not found"
  code: 2;   error: "resource not found"
@@ -13,3 +13,4 @@ Error codes:
 
 
 
+ -->
