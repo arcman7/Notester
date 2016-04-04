@@ -156,41 +156,8 @@ $(document).ready(function(){
 
 
   var signUp = function(){
-    //this function gives detail(title) to a new noteObject, which at this state only has an Id + content
-    // if (localStorage.notesterUser !== 'Anon' && localStorage.notesterUser !== undefined){ //means we're logged in
-    if ($("#user-username").css("color") !== "rgb(255, 0, 0)"){
-      saveNoteButton.addEventListener('click', function(){
-       bootbox.prompt("Title name:", function (result) {
-          var date = new Date();
-          var title = result || "Note Title"// + date.toString();
-          description = $(".form-control").val();         //controller param for backend saving
-          var username = localStorage.notesterUser;       //controller param for backend saving
-          var storageId = sessionStorage.notesterIdFocus; //controller
-          var noteObject = JSON.parse(localStorage['notes-app-'+storageId]); //model
-          noteObject.title = title;                                          //model
-          setNoteDom(noteObject,FOCUS);                   //view-model sync
-          data = {resource: {title: title, description: description}, username: username };
-          var request = $.ajax( setAjaxCall(noteObject, data));
-            request.done(
-            function (response){
-              console.log("response: ", response);
-              if(response.id){
-                // var storageId = sessionStorage.notesterIdFocus;
-                // var noteObject = JSON.parse(localStorage['notes-app-'+storageId]);
-                noteObject.id = response.id;
-                noteObject.parent_id = response.parent_id;
-                localStorage['notes-app-'+storageId] = JSON.stringify(noteObject);
-                console.log("success: ",response);
-                $('.bb-alert').delay(200).fadeIn().delay(4000).fadeOut(); //dom-view
-              }
-              else{
-                //alert(JSON.stringify(response));
-              }
-            });
-          })
-        });//end event listener
-    }
-    else {
+    //if user isnt logged in, sign up modal pops up
+    if ($("#user-username").css("color") === "rgb(255, 0, 0)"){
       saveNoteButton.addEventListener('click', function(){
             bootbox.alert(strSignUp, function() {//preventing signup form default
           });

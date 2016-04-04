@@ -24,7 +24,7 @@
         },
         {
           element: '#save-note',
-          intro: '<p class="h4 text-uc"><strong>3: Save the note</strong></p><p>Press this button to save your note.</p>',
+          intro: '<p class="h4 text-uc"><strong>3: Save all notes!</strong></p><p>Press this button to save all your recent notes!</p>',
           position: 'left'
         },
         {

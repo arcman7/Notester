@@ -321,6 +321,37 @@ function editNoteListener(container){
 
   });//end on dblcick
 }
+function hardSave(){
+   if ($("#user-username").css("color") !== "rgb(255, 0, 0)"){
+    $("#save-note").on('click', function(){
+      for(key in localStorage){
+          //1. take key and make new key
+          if(key.includes('notes-app-')){
+              var id = key.split('-')[2];
+              console.log("hard save idd: ",id,key);
+              var noteObject = JSON.parse(localStorage[key])
+              console.log('noteObject');
+              var data = { resource: { title: noteObject.title, description: noteObject.description}, parent: noteObject.subject || "subject", username: localStorage.notesterUser }; //model
+              var request = $.ajax( setAjaxCall(noteObject, data) );
+              request.done(function (response){
+                      console.log("response: ",response);
+                      if(response.success){
+                        noteObject.id = response.id;
+                        noteObject.parent_id = response.parent_id; // waiting for server to update note parent and save in the local storage
+                        localStorage[key] = JSON.stringify(noteObject); //model
+                      }
+                      else{
+                        $('.bb-alert-fail').delay(200).fadeIn().delay(4000).fadeOut(); //dom-view
+                        console.log(object.id)
+                      }
+                    });
+              console.log("thats not the art I know");
+              // $('.bb-alert').delay(200).fadeIn().delay(4000).fadeOut();
+          }
+      }
+    })
+  }
+}
 
 function noteBehaviorController(){
   var noteContainer = $('#note-items');
@@ -332,6 +363,7 @@ function noteBehaviorController(){
   updateNoteContentListener(); //controller-view-model behavior
   editNoteListener(noteContainer);    //controller-view
   searchListener();             //controller-backend-view
+  hardSave();
 }
 
 
